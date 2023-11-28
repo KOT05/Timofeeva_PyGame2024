@@ -10,8 +10,7 @@ class Level:
         self.display_serface = serface
 
         # переменные для работы с ключами на уровне
-        self.keys_get = set()
-        self.kol_keys_on_level = 0
+        self.keys_get = False
 
         # СЛОЙ 1 настройка края игрового поля (кирипичей)
         bricks_layout = import_csv_layout(level_data['bricks']) # получаем матрицу с индексами плиток
@@ -59,40 +58,32 @@ class Level:
                         # получаем плитку по индексу из списка
                         tile_surface = self.tile_list[int(col)]
                         # создаем статичный объект
-                        sprite = StaticTile(32, 32, x, y, tile_surface)
-                        sprites_group.add(sprite)
+                        sprites_group.add(StaticTile(32, 32, x, y, tile_surface))
 
                     elif type == 'door':
                         # создаем объект класса дверь (изображение будет полгружаться внутри)
-                        sprite = Door(46, 56, x, y)
-                        sprites_group.add(sprite)
+                        sprites_group.add(Door(46, 56, x, y))
 
                     elif type == 'key':
                         # создаем анимированный объект
-                        sprite = AnimatedTile(32, 32, x, y, 'Resources/Tiles/Tiles_from_internet/15-Key')
-                        # считаем, сколько ключей на уровне
-                        self.kol_keys_on_level += 1
-                        sprites_group.add(sprite)
+                        sprites_group.add(AnimatedTile(32, 32, x, y, 'Resources/Tiles/Tiles_from_internet/15-Key'))
 
                     elif type == 'enemy' and col == '0': # сам враг
                         # создаем объект класса враг
-                        sprite = Enemy(x, y)
-                        sprites_group.add(sprite)
+                        sprites_group.add(Enemy(x, y))
 
                     elif type == 'enemy_stop' and col == '1': # ограничители для врагов
                         # создаем объект, нам не так важен класс, главное - его расположение
-                        sprite = Tile(32, 32, x, y)
-                        sprites_group.add(sprite)
+                        sprites_group.add(Tile(32, 32, x, y))
 
                     elif type == 'start' and col == '0':
-                        sprite = Player((x, y)) # создаем объект игрока
-                        sprites_group.add(sprite)
+                        # создаем объект игрока
+                        sprites_group.add(Player((x, y)))
 
 
                     elif type == 'stop' and col == '1': # конец уровня
                         # создаем объект, нам не так важен класс, главное - его расположение
-                        sprite = Tile(32, 32, x, y)
-                        sprites_group.add(sprite)
+                        sprites_group.add(Tile(32, 32, x, y))
 
         return sprites_group
 
@@ -104,22 +95,19 @@ class Level:
 
     # взятие ключа
     def key_getting(self):
-        player = self.player.sprite
+        # роверяем, что на уровне еще есть ключи
+        if not self.keys_get:
+            player = self.player.sprite
 
-        for key in self.key_sprites.sprites():
-            if key.rect.colliderect(player.rect): # если расположения совпадают
+            for key in self.key_sprites.sprites():
+                if key.rect.colliderect(player.rect): # если расположения совпадают
+                    key.kill()  # удаляем получееный ключ из всех групп
+                    if len(self.key_sprites) == 0:
+                        self.keys_get = True # если собрали все ключи
 
-                # так как этот цикл прокручивается несколько раз за секунду, приходится проверять дополнительно
-                if self.keys_get != 'all':
-                    self.keys_get.add(key) # добавляем ключ в множество, чтобы посчитать собранные ключи
-
-                if self.kol_keys_on_level == len(self.keys_get): # если собраны все ключи, то меняем на all
-                    self.keys_get = 'all'
-
-                for door in self.door_sprites.sprites():
-                    # вызываем метод, который уберет анимацию забранного ключа с уровня и открывает дверь, если собраны все ключи
-                    key.getting_key(self.keys_get == 'all', door)
-
+                        for door in self.door_sprites.sprites():
+                            # вызываем метод, который открывает дверь, если собраны все ключи
+                            door.animate()
 
     # не даем выйти игроку за рамки уровня по горизонтали
     def horizontal_movement_collision(self):
@@ -159,7 +147,7 @@ class Level:
 
         for sprite in self.end_sprites.sprites():
             # если координаты гг и координаты плиток финища совпадают и все ключи собраны, пока меняеем цвет
-            if sprite.rect.colliderect(player.rect) and self.keys_get == 'all':
+            if sprite.rect.colliderect(player.rect) and len(self.key_sprites) == 0:
                 player.image.fill('black')
 
     def run(self):

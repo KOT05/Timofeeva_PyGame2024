@@ -19,29 +19,27 @@ class StaticTile(Tile):
 class Door(Tile):
     def __init__(self, size_x, size_y, x, y):
         super().__init__(size_x, size_y, x, y)
-
+        #  переменная, чтобы не начать анимацию раньше времени
         self.go_animated = False
+
+        # вырезаем все плитки, подготавливаем первую картинку двери
         self.frame_index = 0
         self.frames = import_cut_graphic('Resources/Tiles/Tiles_from_internet/11-Door/Opening (46x56).png', 46, 56)
-
-        self.image = pygame.image.load('Resources/Tiles/Tiles_from_internet/11-Door/Idle.png').convert_alpha()
-        offset_y = y + 32
-        self.rect = self.image.get_rect(bottomleft=(x, offset_y))
-
-    def update(self, changes=False):
-        if changes:
-            self.go_animated = True
-
-        if self.go_animated:
-            self.animate()
+        self.image = self.frames[self.frame_index]
+        self.rect = self.image.get_rect(bottomleft=(x, y + 32)) # у + 32, потому что у картинки нестандартный размер
 
     def animate(self):
-        self.frame_index += 0.1
-        ind = int(self.frame_index % len(self.frames))
-        self.image = self.frames[ind]
+        # первоначально вызываем из level, если все ключи собраны, далее вызывем в функции updete
+        self.go_animated = True
+        self.frame_index += 0.12
 
-        if ind == 4 and self.frame_index > 1:
-            self.go_animated = False
+        # так как анимацию нужно показать только один раз, делаем проверку индекса
+        if self.frame_index <= 5:
+            self.image = self.frames[int(self.frame_index)]
+
+    def update(self):
+        if self.go_animated:
+            self.animate()
 
 
 class AnimatedTile(Tile):
@@ -57,9 +55,3 @@ class AnimatedTile(Tile):
 
     def update(self):
         self.animate()
-
-    def getting_key(self, keys_on_get, door):
-        self.frames = [pygame.image.load('Resources/Tiles/Tiles_from_internet/Пустое.png').convert_alpha()]
-        if keys_on_get:
-            door.update(True)
-            # дверь должна начать анимироваться
