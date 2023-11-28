@@ -1,0 +1,39 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "пробный уровень.tmx",
+    "expandedProjectPaths": [
+        "Lib",
+        "."
+    ],
+    "fileStates": {
+        "кирпичики.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 4
+        },
+        "пробный уровень.tmx": {
+            "scale": 0.98325,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 800.9153318077804,
+                "y": 416.47597254004575
+            }
+        }
+    },
+    "last.imagePath": "C:/Users/HP/Desktop/Coding/Sprites/14-TileSets",
+    "map.height": 26,
+    "map.lastUsedFormat": "tmx",
+    "map.width": 50,
+    "openFiles": [
+        "кирпичики.tsx",
+        "пробный уровень.tmx"
+    ],
+    "project": "tiled.tiled-project",
+    "recentFiles": [
+        "кирпичики.tsx",
+        "пробный уровень.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}
