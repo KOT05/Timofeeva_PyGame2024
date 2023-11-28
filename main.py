@@ -1,7 +1,8 @@
 import pygame
 import sys
 from level import Level
-from game_data import level_0
+from level_data import level_0
+from files_manager import enemy_sprites
 
 # настройки pygame
 pygame.init()

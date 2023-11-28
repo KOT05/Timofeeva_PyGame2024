@@ -11,7 +11,7 @@ class Enemy(pygame.sprite.Sprite):
         self.speed = randint(2, 6) / 2
 
         # из общего изображения вырезаем плитки для анимации
-        self.frames = import_cut_graphic('../Плитки/Tiles_from_internet/17-Enemy run/enemy.png', 32, 32)
+        self.frames = import_cut_graphic('Resources/Tiles/Tiles_from_internet/17-Enemy run/enemy.png', 32, 32)
         self.frame_index = 0
         # выбираем первое изображение и загружаем
         self.image = self.frames[self.frame_index]

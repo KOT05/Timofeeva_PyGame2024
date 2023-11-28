@@ -22,9 +22,9 @@ class Door(Tile):
 
         self.go_animated = False
         self.frame_index = 0
-        self.frames = import_cut_graphic('../Плитки/Tiles_from_internet/11-Door/Opening (46x56).png', 46, 56)
+        self.frames = import_cut_graphic('Resources/Tiles/Tiles_from_internet/11-Door/Opening (46x56).png', 46, 56)
 
-        self.image = pygame.image.load('../Плитки/Tiles_from_internet/11-Door/Idle.png').convert_alpha()
+        self.image = pygame.image.load('Resources/Tiles/Tiles_from_internet/11-Door/Idle.png').convert_alpha()
         offset_y = y + 32
         self.rect = self.image.get_rect(bottomleft=(x, offset_y))
 
@@ -59,7 +59,7 @@ class AnimatedTile(Tile):
         self.animate()
 
     def getting_key(self, keys_on_get, door):
-        self.frames = [pygame.image.load('../Плитки/Tiles_from_internet/Пустое.png').convert_alpha()]
+        self.frames = [pygame.image.load('Resources/Tiles/Tiles_from_internet/Пустое.png').convert_alpha()]
         if keys_on_get:
             door.update(True)
             # дверь должна начать анимироваться
