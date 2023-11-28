@@ -48,3 +48,4 @@ def import_cut_graphic(way, size_x, size_y):
             cut_tiles.append(new_surf)
 
     return cut_tiles
+

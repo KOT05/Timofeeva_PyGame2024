@@ -6,3 +6,4 @@ level_0 = {'door': 'Resources/Levels/0/пробный уровень_дверь.
            'key': 'Resources/Levels/0/пробный уровень_ключ.csv',
            'wall': 'Resources/Levels/0/пробный уровень_стена.csv',
            'enemy': 'Resources/Levels/0/пробный уровень_враги.csv'}
+

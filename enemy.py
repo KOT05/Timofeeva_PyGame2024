@@ -45,3 +45,4 @@ class Enemy(pygame.sprite.Sprite):
     # вызываем в level, если наткнулся на ограничитель. меняем направление
     def reverse(self):
         self.speed *= -1
+

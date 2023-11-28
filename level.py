@@ -181,3 +181,4 @@ class Level:
         self.vertical_movement_collision() # достигли ли кирпичей по вертикали
         self.the_end_of_level() # дошли ли до конца
         self.player.draw(self.display_serface)
+
