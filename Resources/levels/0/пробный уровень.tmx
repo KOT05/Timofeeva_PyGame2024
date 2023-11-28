@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="50" height="26" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
  <tileset firstgid="1" source="кирпичики.tsx"/>
- <tileset firstgid="1" source="../../Плитки/наборы плиток/кирпичи.tsx"/>
- <tileset firstgid="248" source="../../Плитки/наборы плиток/дверь.tsx"/>
- <tileset firstgid="251" source="../../Плитки/наборы плиток/ключ.tsx"/>
- <tileset firstgid="253" source="../../Плитки/наборы плиток/старт и стоп.tsx"/>
+ <tileset firstgid="1" source="../../Tiles/наборы плиток/кирпичи.tsx"/>
+ <tileset firstgid="248" source="../../Tiles/наборы плиток/дверь.tsx"/>
+ <tileset firstgid="251" source="../../Tiles/наборы плиток/ключ.tsx"/>
+ <tileset firstgid="253" source="../../Tiles/наборы плиток/старт и стоп.tsx"/>
  <tileset firstgid="255" name="враги" tilewidth="32" tileheight="32" tilecount="8" columns="8">
-  <image source="../../Плитки/Tiles_from_internet/17-Enemy run/enemy.png" width="256" height="32"/>
+  <image source="../../Tiles/Tiles_from_internet/17-Enemy run/enemy.png" width="256" height="32"/>
  </tileset>
  <layer id="1" name="стена" width="50" height="26">
   <data encoding="csv">

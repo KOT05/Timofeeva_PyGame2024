@@ -10,6 +10,9 @@ class Player(pygame.sprite.Sprite):
         self.image.fill('red')
         self.rect = self.image.get_rect(topleft=pos)
 
+        # множество кнопок, которые игнорируются до определенного момента
+        self.ignore = set()
+
         # настройки для движения
         self.on_ground = True
         self.direction = pygame.math.Vector2(0, 0)
@@ -28,8 +31,13 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
-        if keys[pygame.K_UP]: # стрелка вверх нажата
+        # если стрелка вверх нажата, и ее нет в игнориремых, то прыгаем
+        if keys[pygame.K_UP] and 'K_UP' not in self.ignore:
             self.jump()
+            self.ignore.add('K_UP') # пока кнопку не отожмут, мы ее игнорим
+
+        elif not keys[pygame.K_UP]: # кнопка отжата, далее не игноририм ее
+            self.ignore.discard('K_UP')
 
     # добавляем гравитацию, чтобы падать после прыжка
     def apply_gravity(self):
