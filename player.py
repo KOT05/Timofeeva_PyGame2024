@@ -1,5 +1,7 @@
 import pygame
 
+from tile import AnimatedTile
+
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos):
@@ -20,6 +22,10 @@ class Player(pygame.sprite.Sprite):
         self.gravity = 0.8
         self.jump_speed = -16
 
+        # настройки для портала
+        self.z_kol = 0
+        self.portal_sprites = pygame.sprite.Group()
+
     # управление персом
     def get_input(self):
         keys = pygame.key.get_pressed()
@@ -39,6 +45,15 @@ class Player(pygame.sprite.Sprite):
         elif not keys[pygame.K_UP]: # кнопка отжата, далее не игноририм ее
             self.ignore.discard('K_UP')
 
+        # если Z, и ее нет в игнориремых, то вызываем функциюю portal()
+        if keys[pygame.K_z] and 'K_z' not in self.ignore:
+            self.z_kol += 1
+            self.portal()
+            self.ignore.add('K_z')  # пока кнопку не отожмут, мы ее игнорим
+
+        elif not keys[pygame.K_z]:  # кнопка отжата, далее не игноририм ее
+            self.ignore.discard('K_z')
+
     # добавляем гравитацию, чтобы падать после прыжка
     def apply_gravity(self):
         self.direction.y += self.gravity
@@ -52,3 +67,24 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         self.get_input()
+
+    # работа с порталом
+    def portal(self):
+        # если нечетное количество нажатий кнопки, то создаем портал
+        if self.z_kol % 2 == 1:
+            # получаем координаты для портала
+            self.portal_x = self.rect.x
+            self.portal_y = self.rect.y
+
+            # добавляем в группу портал, чтобы он отрисовывался
+            self.portal_sprites.add(AnimatedTile(32, 32, self.portal_x, self.portal_y, 'Resources/Tiles/Tiles_from_internet/19-Portal'))
+
+        # если четное, то перемещаем игрока на место портала
+        elif self.z_kol != 0:
+            # перемещаем игрока на координаты портала и игнорируем прыжок
+            self.rect.x = self.portal_x
+            self.rect.y = self.portal_y
+            self.on_ground = False
+
+            # заново создаем пустую группу, чтобы портал не рисовался
+            self.portal_sprites = pygame.sprite.Group()

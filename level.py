@@ -58,32 +58,38 @@ class Level:
                         # получаем плитку по индексу из списка
                         tile_surface = self.tile_list[int(col)]
                         # создаем статичный объект
-                        sprites_group.add(StaticTile(32, 32, x, y, tile_surface))
+                        sprite = StaticTile(32, 32, x, y, tile_surface)
+                        sprites_group.add(sprite)
 
                     elif type == 'door':
                         # создаем объект класса дверь (изображение будет полгружаться внутри)
-                        sprites_group.add(Door(46, 56, x, y))
+                        sprite = Door(46, 56, x, y)
+                        sprites_group.add(sprite)
 
                     elif type == 'key':
                         # создаем анимированный объект
-                        sprites_group.add(AnimatedTile(32, 32, x, y, 'Resources/Tiles/Tiles_from_internet/15-Key'))
+                        sprite = AnimatedTile(32, 32, x, y, 'Resources/Tiles/Tiles_from_internet/15-Key')
+                        sprites_group.add(sprite)
 
                     elif type == 'enemy' and col == '0': # сам враг
                         # создаем объект класса враг
-                        sprites_group.add(Enemy(x, y))
+                        sprite = Enemy(x, y)
+                        sprites_group.add(sprite)
 
                     elif type == 'enemy_stop' and col == '1': # ограничители для врагов
                         # создаем объект, нам не так важен класс, главное - его расположение
-                        sprites_group.add(Tile(32, 32, x, y))
+                        sprite = Tile(32, 32, x, y)
+                        sprites_group.add(sprite)
 
                     elif type == 'start' and col == '0':
-                        # создаем объект игрока
-                        sprites_group.add(Player((x, y)))
+                        sprite = Player((x, y)) # создаем объект игрока
+                        sprites_group.add(sprite)
 
 
                     elif type == 'stop' and col == '1': # конец уровня
                         # создаем объект, нам не так важен класс, главное - его расположение
-                        sprites_group.add(Tile(32, 32, x, y))
+                        sprite = Tile(32, 32, x, y)
+                        sprites_group.add(sprite)
 
         return sprites_group
 
@@ -95,19 +101,18 @@ class Level:
 
     # взятие ключа
     def key_getting(self):
-        # роверяем, что на уровне еще есть ключи
         if not self.keys_get:
             player = self.player.sprite
 
             for key in self.key_sprites.sprites():
                 if key.rect.colliderect(player.rect): # если расположения совпадают
-                    key.kill()  # удаляем получееный ключ из всех групп
-                    if len(self.key_sprites) == 0:
-                        self.keys_get = True # если собрали все ключи
+                    key.kill()
 
+                    if len(self.key_sprites) == 0:
+                        self.keys_get = True
                         for door in self.door_sprites.sprites():
-                            # вызываем метод, который открывает дверь, если собраны все ключи
                             door.animate()
+
 
     # не даем выйти игроку за рамки уровня по горизонтали
     def horizontal_movement_collision(self):
@@ -147,8 +152,12 @@ class Level:
 
         for sprite in self.end_sprites.sprites():
             # если координаты гг и координаты плиток финища совпадают и все ключи собраны, пока меняеем цвет
-            if sprite.rect.colliderect(player.rect) and len(self.key_sprites) == 0:
+            if sprite.rect.colliderect(player.rect) and self.keys_get:
                 player.image.fill('black')
+
+    def portal(self):
+        player = self.player.sprite
+        return player.portal_sprites
 
     def run(self):
         # матрицы с изображением плиток выводятся на экран
@@ -169,6 +178,11 @@ class Level:
         self.key_sprites.draw(self.display_serface)
         self.key_getting() # проверяем, не взяли ли ключ
         self.key_sprites.update()
+
+        # портал
+        portal = self.portal()
+        portal.draw(self.display_serface)
+        portal.update()
 
         # враги
         self.enemy_sprites.draw(self.display_serface)
