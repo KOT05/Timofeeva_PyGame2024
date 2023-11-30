@@ -55,4 +55,3 @@ class AnimatedTile(Tile):
 
     def update(self):
         self.animate()
-
