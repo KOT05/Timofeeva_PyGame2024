@@ -18,8 +18,8 @@ def import_folder(way):
 
 # чтение csv файла с индексами плиток
 def import_csv_layout(way):
-    with open(way) as map:
-        level = reader(map, delimiter=',')
+    with open(way) as data:
+        level = reader(data, delimiter=',')
         scv_map = [list(row) for row in level]
 
         return scv_map

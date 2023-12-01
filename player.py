@@ -1,5 +1,4 @@
 import pygame
-
 from tile import AnimatedTile
 
 
@@ -40,7 +39,7 @@ class Player(pygame.sprite.Sprite):
         # если стрелка вверх нажата, и ее нет в игнориремых, то прыгаем
         if keys[pygame.K_UP] and 'K_UP' not in self.ignore:
             self.jump()
-            self.ignore.add('K_UP') # пока кнопку не отожмут, мы ее игнорим
+            self.ignore.add('K_UP')  # пока кнопку не отожмут, мы ее игнорим
 
         elif not keys[pygame.K_UP]: # кнопка отжата, далее не игноририм ее
             self.ignore.discard('K_UP')
@@ -53,6 +52,7 @@ class Player(pygame.sprite.Sprite):
 
         elif not keys[pygame.K_z]:  # кнопка отжата, далее не игноририм ее
             self.ignore.discard('K_z')
+
 
     # добавляем гравитацию, чтобы падать после прыжка
     def apply_gravity(self):

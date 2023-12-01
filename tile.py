@@ -26,7 +26,7 @@ class Door(Tile):
         self.frame_index = 0
         self.frames = import_cut_graphic('Resources/Tiles/Tiles_from_internet/11-Door/Opening (46x56).png', 46, 56)
         self.image = self.frames[self.frame_index]
-        self.rect = self.image.get_rect(bottomleft=(x, y + 32)) # у + 32, потому что у картинки нестандартный размер
+        self.rect = self.image.get_rect(bottomleft=(x, y + 32))  # у + 32, потому что у картинки нестандартный размер
 
     def animate(self):
         # первоначально вызываем из level, если все ключи собраны, далее вызывем в функции updete

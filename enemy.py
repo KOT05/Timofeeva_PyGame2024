@@ -38,7 +38,7 @@ class Enemy(pygame.sprite.Sprite):
     def move(self):
         self.rect.x += self.speed
 
-    def reverse_image(self): # если бежит влево, то разворачиваем картинки
+    def reverse_image(self):  # если бежит влево, то разворачиваем картинки
         if self.speed < 0:
             self.image = pygame.transform.flip(self.image, True, False)
 
