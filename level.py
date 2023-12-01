@@ -13,41 +13,34 @@ class Level:
         self.keys_get = False
 
         # СЛОЙ 1 настройка края игрового поля (кирипичей)
-        bricks_layout = import_csv_layout(level_data['bricks'])  # получаем матрицу с индексами плиток
-        self.tile_list = import_cut_graphic('Resources/Tiles/Tiles_from_internet/14-TileSets/Terrain.png', 32,
-                                            32)  # вырезаем все плитки из общего изображения
-        self.bricks_sprites = self.creat_tile_group(bricks_layout,
-                                                    'bricks')  # создаем матрицу с плитками (изображениями) кирпичей
+        bricks_layout = import_csv_layout(level_data['bricks']) # получаем матрицу с индексами плиток
+        self.tile_list = import_cut_graphic('Resources/Tiles/Tiles_from_internet/14-TileSets/Terrain.png', 32, 32) # вырезаем все плитки из общего изображения
+        self.bricks_sprites = self.creat_tile_group(bricks_layout, 'bricks') # создаем матрицу с плитками (изображениями) кирпичей
 
         # СЛОЙ 2 настройка задней стены
-        wall_layout = import_csv_layout(level_data['wall'])  # получаем матрицу с индексами плиток
-        self.wall_sprites = self.creat_tile_group(wall_layout,
-                                                  'wall')  # создаем матрицу с плитками (изображениями) стены
+        wall_layout = import_csv_layout(level_data['wall']) # получаем матрицу с индексами плиток
+        self.wall_sprites = self.creat_tile_group(wall_layout, 'wall') # создаем матрицу с плитками (изображениями) стены
 
         # СЛОЙ 3 настройка двери
-        door_layout = import_csv_layout(level_data['door'])  # получаем матрицу с индексами плиток
-        self.door_sprites = self.creat_tile_group(door_layout,
-                                                  'door')  # создаем матрицу с плитками (изображениями) двери
+        door_layout = import_csv_layout(level_data['door']) # получаем матрицу с индексами плиток
+        self.door_sprites = self.creat_tile_group(door_layout, 'door') # создаем матрицу с плитками (изображениями) двери
 
         # СЛОЙ 4 настройка ключа
-        key_layout = import_csv_layout(level_data['key'])  # получаем матрицу с индексами плиток
-        self.key_sprites = self.creat_tile_group(key_layout, 'key')  # создаем матрицу с плитками (изображениями) ключей
+        key_layout = import_csv_layout(level_data['key']) # получаем матрицу с индексами плиток
+        self.key_sprites = self.creat_tile_group(key_layout, 'key') # создаем матрицу с плитками (изображениями) ключей
 
         # СЛОЙ 6 настройка врага
-        enemy_layout = import_csv_layout(level_data['enemy'])  # получаем матрицу с индексами плиток
-        self.enemy_sprites = self.creat_tile_group(enemy_layout,
-                                                   'enemy')  # создаем матрицу с плитками (изображениями) врагов
-        self.enemy_stop_sprites = self.creat_tile_group(enemy_layout,
-                                                        'enemy_stop')  # создаем матрицу с плитками-ограничителями движения
+        enemy_layout = import_csv_layout(level_data['enemy']) # получаем матрицу с индексами плиток
+        self.enemy_sprites = self.creat_tile_group(enemy_layout, 'enemy') # создаем матрицу с плитками (изображениями) врагов
+        self.enemy_stop_sprites = self.creat_tile_group(enemy_layout, 'enemy_stop') # создаем матрицу с плитками-ограничителями движения
 
         # настройка игрока
-        start_stop_layout = import_csv_layout(level_data['start_stop'])  # получаем матрицу с индексами плиток
-        self.player = self.creat_tile_group(start_stop_layout, 'start')  # создаем матрицу с местом старта игрока
-        self.end_sprites = self.creat_tile_group(start_stop_layout,
-                                                 'stop')  # создаем матрицу с плитками, завершающими уровень (если координаты игрока совпадают с координатами этих плиток, то уровень считается пройденным)
+        start_stop_layout = import_csv_layout(level_data['start_stop']) # получаем матрицу с индексами плиток
+        self.player = self.creat_tile_group(start_stop_layout, 'start') # создаем матрицу с местом старта игрока
+        self.end_sprites = self.creat_tile_group(start_stop_layout, 'stop') # создаем матрицу с плитками, завершающими уровень (если координаты игрока совпадают с координатами этих плиток, то уровень считается пройденным)
 
     def creat_tile_group(self, layout, type):
-        # группировка игрока отличается от других
+        # нруппировка игрока отличается от других
         if type == 'start':
             sprites_group = pygame.sprite.GroupSingle()
         else:
@@ -69,7 +62,7 @@ class Level:
                         sprites_group.add(sprite)
 
                     elif type == 'door':
-                        # создаем объект класса дверь (изображение будет подгружаться внутри)
+                        # создаем объект класса дверь (изображение будет полгружаться внутри)
                         sprite = Door(46, 56, x, y)
                         sprites_group.add(sprite)
 
@@ -78,22 +71,22 @@ class Level:
                         sprite = AnimatedTile(32, 32, x, y, 'Resources/Tiles/Tiles_from_internet/15-Key')
                         sprites_group.add(sprite)
 
-                    elif type == 'enemy' and col == '0':  # сам враг
+                    elif type == 'enemy' and col == '0': # сам враг
                         # создаем объект класса враг
                         sprite = Enemy(x, y)
                         sprites_group.add(sprite)
 
-                    elif type == 'enemy_stop' and col == '1':  # ограничители для врагов
+                    elif type == 'enemy_stop' and col == '1': # ограничители для врагов
                         # создаем объект, нам не так важен класс, главное - его расположение
                         sprite = Tile(32, 32, x, y)
                         sprites_group.add(sprite)
 
                     elif type == 'start' and col == '0':
-                        sprite = Player((x, y))  # создаем объект игрока
+                        sprite = Player((x, y)) # создаем объект игрока
                         sprites_group.add(sprite)
 
 
-                    elif type == 'stop' and col == '1':  # конец уровня
+                    elif type == 'stop' and col == '1': # конец уровня
                         # создаем объект, нам не так важен класс, главное - его расположение
                         sprite = Tile(32, 32, x, y)
                         sprites_group.add(sprite)
@@ -112,7 +105,7 @@ class Level:
             player = self.player.sprite
 
             for key in self.key_sprites.sprites():
-                if key.rect.colliderect(player.rect):  # если расположения совпадают
+                if key.rect.colliderect(player.rect): # если расположения совпадают
                     key.kill()
 
                     if len(self.key_sprites) == 0:
@@ -120,34 +113,35 @@ class Level:
                         for door in self.door_sprites.sprites():
                             door.animate()
 
+
     # не даем выйти игроку за рамки уровня по горизонтали
     def horizontal_movement_collision(self):
         player = self.player.sprite
-        player.rect.x += player.direction.x * player.speed  # меняем расположение игрока
+        player.rect.x += player.direction.x * player.speed # меняем расположение игрока
 
         for sprite in self.bricks_sprites.sprites():
-            if sprite.rect.colliderect(player.rect):  # если координаты гг и кирпичей совпадают, то
+            if sprite.rect.colliderect(player.rect): # если координаты гг и кирпичей совпадают, то
 
-                if player.direction.x < 0:  # если двигался налево, двигаем направо
+                if player.direction.x < 0: # если двигался налево, двигаем направо
                     player.rect.left = sprite.rect.right
 
-                elif player.direction.x > 0:  # если двигался направо, двигаем налево
+                elif player.direction.x > 0: # если двигался направо, двигаем налево
                     player.rect.right = sprite.rect.left
 
     # не даем выйти игроку за рамки уровня по вертикали
     def vertical_movement_collision(self):
         player = self.player.sprite
-        player.apply_gravity()  # 'включаем' гравитацию
+        player.apply_gravity() # 'включаем' гравитацию
 
         for sprite in self.bricks_sprites.sprites():
-            if sprite.rect.colliderect(player.rect):  # если координаты гг и кирпичей совпадают, то
+            if sprite.rect.colliderect(player.rect):# если координаты гг и кирпичей совпадают, то
 
-                if player.direction.y > 0:  # если двигался вниз, двигаем вверх
+                if player.direction.y > 0: # если двигался вниз, двигаем вверх
                     player.rect.bottom = sprite.rect.top
-                    player.direction.y = 0  # обнуляем направление, чтобы не накапливалась гравитация
-                    player.on_ground = True  # переменная для прыжка (прыгаем только с кирпичей)
+                    player.direction.y = 0 # обнуляем направление, чтобы не накапливалась гравитация
+                    player.on_ground = True # переменная для прыжка (прыгаем только с кирпичей)
 
-                elif player.direction.y < 0:  # если двигался вверх, двигаем вниз
+                elif player.direction.y < 0: # если двигался вверх, двигаем вниз
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
                     player.on_ground = False
@@ -182,7 +176,7 @@ class Level:
 
         # ключ
         self.key_sprites.draw(self.display_serface)
-        self.key_getting()  # проверяем, не взяли ли ключ
+        self.key_getting() # проверяем, не взяли ли ключ
         self.key_sprites.update()
 
         # портал
@@ -193,11 +187,11 @@ class Level:
         # враги
         self.enemy_sprites.draw(self.display_serface)
         self.enemy_sprites.update()
-        self.enemy_reverse()  # не надо ли развернуться
+        self.enemy_reverse() # не надо ли развернуться
 
         # игрок
         self.player.update()
-        self.horizontal_movement_collision()  # достигли ли кирпичей по горизонтали
-        self.vertical_movement_collision()  # достигли ли кирпичей по вертикали
-        self.the_end_of_level()  # дошли ли до конца
+        self.horizontal_movement_collision() # достигли ли кирпичей по горизонтали
+        self.vertical_movement_collision() # достигли ли кирпичей по вертикали
+        self.the_end_of_level() # дошли ли до конца
         self.player.draw(self.display_serface)

@@ -1,7 +1,7 @@
 import pygame
 import sys
 from level import Level
-from level_data import level_0
+from level_data import level_0, level_1
 
 # настройки pygame
 pygame.init()
@@ -9,7 +9,7 @@ screen = pygame.display.set_mode((1600, 832))
 clock = pygame.time.Clock()
 
 # выбор уровня
-level = Level(level_0, screen)
+level = Level(level_1, screen)
 
 while True:
     # выход
