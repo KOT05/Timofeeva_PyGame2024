@@ -10,6 +10,7 @@ class Level:
         self.display_serface = serface
 
         self.should_change = False
+        self.should_restart = False
         self.ignore_r = False
 
         # переменные для работы с ключами на уровне
@@ -42,6 +43,12 @@ class Level:
         self.enemy_sprites = self.creat_tile_group(enemy_layout, 'enemy')
         self.enemy_stop_sprites = self.creat_tile_group(enemy_layout, 'enemy_stop')
 
+        # СЛОЙ 7 настройка края игрового поля (кирипичей)
+        button_layout = import_csv_layout(level_data['button'])
+        self.tile_list = import_cut_graphic('Resources/Tiles/Tiles_from_internet/21-Button/restart.png', 32,
+                                            32)  # вырезаем все плитки из общего изображения
+        self.button_sprites = self.creat_tile_group(button_layout, 'button')
+
         # настройка игрока
         start_stop_layout = import_csv_layout(level_data['start_stop'])
         self.player = self.creat_tile_group(start_stop_layout, 'start')
@@ -71,7 +78,8 @@ class Level:
 
                     elif typee == 'door':
                         # создаем объект класса дверь (изображение будет полгружаться внутри)
-                        sprites_group.add(Door(46, 56, x, y))
+                        sprite = Door(46, 56, x, y)
+                        sprites_group.add(sprite)
 
                     elif typee == 'key':
                         # создаем анимированный объект
@@ -104,6 +112,12 @@ class Level:
                         sprite = StaticTile(32, 32, x, y, tile_surface)
                         sprites_group.add(sprite)
 
+                    elif typee == 'button':
+                        # создаем статичный объект
+                        tile_surface = self.tile_list[int(col)]
+                        sprite = StaticTile(32, 32, x, y, tile_surface)
+                        sprites_group.add(sprite)
+
         return sprites_group
 
     # разворот врага при встрече ограничителя
@@ -132,7 +146,7 @@ class Level:
 
         for thorn in self.thorn_sprites.sprites():
             if thorn.rect.colliderect(player.rect):  # если расположения совпадают
-                player.image.fill('black')
+                self.should_restart = True
 
     # не даем выйти игроку за рамки уровня по горизонтали
     def horizontal_movement_collision(self):
@@ -184,11 +198,9 @@ class Level:
 
         # кирпичи
         self.bricks_sprites.draw(self.display_serface)
-        self.bricks_sprites.update()
 
         # стена
         self.wall_sprites.draw(self.display_serface)
-        self.wall_sprites.update()
 
         # дверь
         self.door_sprites.draw(self.display_serface)
@@ -202,7 +214,6 @@ class Level:
         # шипы
         self.thorn_sprites.draw(self.display_serface)
         self.thorn_file()
-        self.thorn_sprites.update()
 
         # портал
         portal = self.portal()
@@ -214,9 +225,13 @@ class Level:
         self.enemy_sprites.update()
         self.enemy_reverse()  # не надо ли развернуться
 
+        # кнопка restart
+        self.button_sprites.draw(self.display_serface)
+
         # игрок
         self.player.update()
         self.horizontal_movement_collision()  # достигли ли кирпичей по горизонтали
         self.vertical_movement_collision()  # достигли ли кирпичей по вертикали
         self.the_end_of_level()  # дошли ли до конца
         self.player.draw(self.display_serface)
+
