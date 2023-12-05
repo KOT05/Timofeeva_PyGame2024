@@ -6,7 +6,8 @@ level_0 = {'door': 'Resources/Levels/0/пробный уровень_дверь.
            'key': 'Resources/Levels/0/пробный уровень_ключ.csv',
            'wall': 'Resources/Levels/0/пробный уровень_стена.csv',
            'enemy': 'Resources/Levels/0/пробный уровень_враги.csv',
-           'thorn': 'Resources/Levels/0/пробный уровень_шипы.csv'}
+           'thorn': 'Resources/Levels/0/пробный уровень_шипы.csv',
+           'button': 'Resources/Levels/0/пробный уровень_restart.csv'}
 
 level_1 = {'door': 'Resources/Levels/1/уровень 1_дверь.csv',
            'bricks': 'Resources/Levels/1/уровень 1_кирпичи.csv',
@@ -14,4 +15,7 @@ level_1 = {'door': 'Resources/Levels/1/уровень 1_дверь.csv',
            'key': 'Resources/Levels/1/уровень 1_ключ.csv',
            'wall': 'Resources/Levels/1/уровень 1_стена.csv',
            'enemy': 'Resources/Levels/1/уровень 1_враги.csv',
-           'thorn': 'Resources/Levels/1/уровень 1_шипы.csv'}
+           'thorn': 'Resources/Levels/1/уровень 1_шипы.csv',
+           'button': 'Resources/Levels/1/уровень 1_restart.csv'}
+
+all_levels = [level_0, level_1, level_0, level_1]

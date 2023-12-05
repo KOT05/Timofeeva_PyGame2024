@@ -1,5 +1,4 @@
 import pygame
-
 from tile import AnimatedTile
 
 
@@ -53,6 +52,7 @@ class Player(pygame.sprite.Sprite):
 
         elif not keys[pygame.K_z]:  # кнопка отжата, далее не игноририм ее
             self.ignore.discard('K_z')
+
 
     # добавляем гравитацию, чтобы падать после прыжка
     def apply_gravity(self):

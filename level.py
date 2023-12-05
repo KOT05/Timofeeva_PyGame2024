@@ -15,24 +15,28 @@ class Level:
         # СЛОЙ 1 настройка края игрового поля (кирипичей)
         bricks_layout = import_csv_layout(level_data['bricks']) # получаем матрицу с индексами плиток
         self.tile_list = import_cut_graphic('Resources/Tiles/Tiles_from_internet/14-TileSets/Terrain.png', 32, 32) # вырезаем все плитки из общего изображения
-        self.bricks_sprites = self.creat_tile_group(bricks_layout, 'bricks') # создаем матрицу с плитками (изображениями) кирпичей
+        self.bricks_sprites = self.creat_tile_group(bricks_layout, 'bricks')
 
         # СЛОЙ 2 настройка задней стены
         wall_layout = import_csv_layout(level_data['wall']) # получаем матрицу с индексами плиток
-        self.wall_sprites = self.creat_tile_group(wall_layout, 'wall') # создаем матрицу с плитками (изображениями) стены
+        self.wall_sprites = self.creat_tile_group(wall_layout, 'wall')
 
         # СЛОЙ 3 настройка двери
         door_layout = import_csv_layout(level_data['door']) # получаем матрицу с индексами плиток
-        self.door_sprites = self.creat_tile_group(door_layout, 'door') # создаем матрицу с плитками (изображениями) двери
+        self.door_sprites = self.creat_tile_group(door_layout, 'door')
 
         # СЛОЙ 4 настройка ключа
         key_layout = import_csv_layout(level_data['key']) # получаем матрицу с индексами плиток
-        self.key_sprites = self.creat_tile_group(key_layout, 'key') # создаем матрицу с плитками (изображениями) ключей
+        self.key_sprites = self.creat_tile_group(key_layout, 'key')
+
+        # СЛОЙ 5 настройка шипов
+        thorn_layout = import_csv_layout(level_data['thorn'])  # получаем матрицу с индексами плиток
+        self.thorn_sprites = self.creat_tile_group(thorn_layout, 'thorn')
 
         # СЛОЙ 6 настройка врага
         enemy_layout = import_csv_layout(level_data['enemy']) # получаем матрицу с индексами плиток
-        self.enemy_sprites = self.creat_tile_group(enemy_layout, 'enemy') # создаем матрицу с плитками (изображениями) врагов
-        self.enemy_stop_sprites = self.creat_tile_group(enemy_layout, 'enemy_stop') # создаем матрицу с плитками-ограничителями движения
+        self.enemy_sprites = self.creat_tile_group(enemy_layout, 'enemy')
+        self.enemy_stop_sprites = self.creat_tile_group(enemy_layout, 'enemy_stop')
 
         # настройка игрока
         start_stop_layout = import_csv_layout(level_data['start_stop']) # получаем матрицу с индексами плиток
@@ -63,8 +67,7 @@ class Level:
 
                     elif type == 'door':
                         # создаем объект класса дверь (изображение будет полгружаться внутри)
-                        sprite = Door(46, 56, x, y)
-                        sprites_group.add(sprite)
+                        sprites_group.add(Door(46, 56, x, y))
 
                     elif type == 'key':
                         # создаем анимированный объект
@@ -91,6 +94,12 @@ class Level:
                         sprite = Tile(32, 32, x, y)
                         sprites_group.add(sprite)
 
+                    elif type == 'thorn':
+                        # создаем статичный объект
+                        tile_surface = pygame.image.load('Resources/Tiles/Tiles_from_internet/20-Thorn/thorn.png').convert_alpha()
+                        sprite = StaticTile(32, 32, x, y, tile_surface)
+                        sprites_group.add(sprite)
+
         return sprites_group
 
     # разворот врага при встрече ограничителя
@@ -112,6 +121,14 @@ class Level:
                         self.keys_get = True
                         for door in self.door_sprites.sprites():
                             door.animate()
+
+    # падение на шипы
+    def thorn_file(self):
+        player = self.player.sprite
+
+        for thorn in self.thorn_sprites.sprites():
+            if thorn.rect.colliderect(player.rect):  # если расположения совпадают
+                player.image.fill('black')
 
 
     # не даем выйти игроку за рамки уровня по горизонтали
@@ -153,7 +170,7 @@ class Level:
         for sprite in self.end_sprites.sprites():
             # если координаты гг и координаты плиток финища совпадают и все ключи собраны, пока меняеем цвет
             if sprite.rect.colliderect(player.rect) and self.keys_get:
-                player.image.fill('black')
+                player.image.fill('green')
 
     def portal(self):
         player = self.player.sprite
@@ -178,6 +195,11 @@ class Level:
         self.key_sprites.draw(self.display_serface)
         self.key_getting() # проверяем, не взяли ли ключ
         self.key_sprites.update()
+
+        # шипы
+        self.thorn_sprites.draw(self.display_serface)
+        self.thorn_file()
+        self.thorn_sprites.update()
 
         # портал
         portal = self.portal()
