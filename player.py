@@ -22,16 +22,16 @@ class Player(pygame.sprite.Sprite):
         self.jump_speed = -16
 
         # настройки для портала
-        self.z_kol = 0
+        self.space_kol = 0
         self.portal_sprites = pygame.sprite.Group()
 
     # управление персом
     def get_input(self):
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_RIGHT]:  # стрелка вправо нажата
+        if keys[pygame.K_RIGHT]: # стрелка вправо нажата
             self.direction.x = 1
-        elif keys[pygame.K_LEFT]:  # стрелка влево нажата
+        elif keys[pygame.K_LEFT]: # стрелка влево нажата
             self.direction.x = -1
         else:
             self.direction.x = 0
@@ -41,17 +41,17 @@ class Player(pygame.sprite.Sprite):
             self.jump()
             self.ignore.add('K_UP')  # пока кнопку не отожмут, мы ее игнорим
 
-        elif not keys[pygame.K_UP]:  # кнопка отжата, далее не игноририм ее
+        elif not keys[pygame.K_UP]: # кнопка отжата, далее не игноририм ее
             self.ignore.discard('K_UP')
 
         # если Z, и ее нет в игнориремых, то вызываем функциюю portal()
-        if keys[pygame.K_z] and 'K_z' not in self.ignore:
-            self.z_kol += 1
+        if keys[pygame.K_SPACE] and 'K_SPACE' not in self.ignore:
+            self.space_kol += 1
             self.portal()
-            self.ignore.add('K_z')  # пока кнопку не отожмут, мы ее игнорим
+            self.ignore.add('K_SPACE')  # пока кнопку не отожмут, мы ее игнорим
 
-        elif not keys[pygame.K_z]:  # кнопка отжата, далее не игноририм ее
-            self.ignore.discard('K_z')
+        elif not keys[pygame.K_SPACE]:  # кнопка отжата, далее не игноририм ее
+            self.ignore.discard('K_SPACE')
 
 
     # добавляем гравитацию, чтобы падать после прыжка
@@ -61,7 +61,7 @@ class Player(pygame.sprite.Sprite):
 
     # прыгаем
     def jump(self):
-        if self.on_ground:  # прыгать можем только с кирпичей
+        if self.on_ground: # прыгать можем только с кирпичей
             self.direction.y = self.jump_speed
             self.on_ground = False
 
@@ -71,17 +71,16 @@ class Player(pygame.sprite.Sprite):
     # работа с порталом
     def portal(self):
         # если нечетное количество нажатий кнопки, то создаем портал
-        if self.z_kol % 2 == 1:
+        if self.space_kol % 2 == 1:
             # получаем координаты для портала
             self.portal_x = self.rect.x
             self.portal_y = self.rect.y
 
             # добавляем в группу портал, чтобы он отрисовывался
-            self.portal_sprites.add(
-                AnimatedTile(32, 32, self.portal_x, self.portal_y, 'Resources/Tiles/Tiles_from_internet/19-Portal'))
+            self.portal_sprites.add(AnimatedTile(32, 32, self.portal_x, self.portal_y, 'Resources/Tiles/Tiles_from_internet/19-Portal'))
 
         # если четное, то перемещаем игрока на место портала
-        elif self.z_kol != 0:
+        elif self.space_kol != 0:
             # перемещаем игрока на координаты портала и игнорируем прыжок
             self.rect.x = self.portal_x
             self.rect.y = self.portal_y
