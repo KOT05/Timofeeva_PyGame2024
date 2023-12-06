@@ -29,9 +29,9 @@ class Player(pygame.sprite.Sprite):
     def get_input(self):
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_RIGHT]: # стрелка вправо нажата
+        if keys[pygame.K_RIGHT]:  # стрелка вправо нажата
             self.direction.x = 1
-        elif keys[pygame.K_LEFT]: # стрелка влево нажата
+        elif keys[pygame.K_LEFT]:  # стрелка влево нажата
             self.direction.x = -1
         else:
             self.direction.x = 0
@@ -41,7 +41,7 @@ class Player(pygame.sprite.Sprite):
             self.jump()
             self.ignore.add('K_UP')  # пока кнопку не отожмут, мы ее игнорим
 
-        elif not keys[pygame.K_UP]: # кнопка отжата, далее не игноририм ее
+        elif not keys[pygame.K_UP]:  # кнопка отжата, далее не игноририм ее
             self.ignore.discard('K_UP')
 
         # если Z, и ее нет в игнориремых, то вызываем функциюю portal()
@@ -61,7 +61,7 @@ class Player(pygame.sprite.Sprite):
 
     # прыгаем
     def jump(self):
-        if self.on_ground: # прыгать можем только с кирпичей
+        if self.on_ground:  # прыгать можем только с кирпичей
             self.direction.y = self.jump_speed
             self.on_ground = False
 
@@ -77,7 +77,8 @@ class Player(pygame.sprite.Sprite):
             self.portal_y = self.rect.y
 
             # добавляем в группу портал, чтобы он отрисовывался
-            self.portal_sprites.add(AnimatedTile(32, 32, self.portal_x, self.portal_y, 'Resources/Tiles/Tiles_from_internet/19-Portal'))
+            self.portal_sprites.add(
+                AnimatedTile(32, 32, self.portal_x, self.portal_y, 'Resources/Tiles/Tiles_from_internet/19-Portal'))
 
         # если четное, то перемещаем игрока на место портала
         elif self.space_kol != 0:
