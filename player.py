@@ -1,15 +1,17 @@
 import pygame
 from tile import AnimatedTile
-
+from csv_work import import_folder
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
 
         # создание самого перса (пока квадратик)
-        self.image = pygame.Surface((32, 32))
-        self.image.fill('red')
-        self.rect = self.image.get_rect(topleft=pos)
+        self.frames = import_folder('Resources/Tiles/Tiles_from_internet/18-Main character/Idle Blink')
+        self.frame_index = 0
+        self.image = self.frames[self.frame_index]
+
+        self.rect = self.image.get_rect(bottomleft=pos)
 
         # множество кнопок, которые игнорируются до определенного момента
         self.ignore = set()
@@ -44,7 +46,7 @@ class Player(pygame.sprite.Sprite):
         elif not keys[pygame.K_UP]: # кнопка отжата, далее не игноририм ее
             self.ignore.discard('K_UP')
 
-        # если Z, и ее нет в игнориремых, то вызываем функциюю portal()
+        # если space, и ее нет в игнориремых, то вызываем функциюю portal()
         if keys[pygame.K_SPACE] and 'K_SPACE' not in self.ignore:
             self.space_kol += 1
             self.portal()
@@ -65,8 +67,13 @@ class Player(pygame.sprite.Sprite):
             self.direction.y = self.jump_speed
             self.on_ground = False
 
+    def animate(self):
+        self.frame_index += 0.15
+        self.image = self.frames[int(self.frame_index % len(self.frames))]
+
     def update(self):
         self.get_input()
+        self.animate()
 
     # работа с порталом
     def portal(self):
@@ -74,7 +81,7 @@ class Player(pygame.sprite.Sprite):
         if self.space_kol % 2 == 1:
             # получаем координаты для портала
             self.portal_x = self.rect.x
-            self.portal_y = self.rect.y
+            self.portal_y = self.rect.y + 8
 
             # добавляем в группу портал, чтобы он отрисовывался
             self.portal_sprites.add(AnimatedTile(32, 32, self.portal_x, self.portal_y, 'Resources/Tiles/Tiles_from_internet/19-Portal'))
