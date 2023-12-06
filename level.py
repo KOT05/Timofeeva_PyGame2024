@@ -18,7 +18,7 @@ class Level:
 
         # СЛОЙ 1 настройка края игрового поля (кирипичей)
         bricks_layout = import_csv_layout(level_data['bricks'])  # получаем матрицу с индексами плиток
-        self.tile_list = import_cut_graphic('Resources/Tiles/Tiles_from_internet/14-TileSets/Terrain.png', 32,
+        self.tile_list = import_cut_graphic('Resources/Tiles/Tiles_from_internet/14-TileSets/bricks.png', 32,
                                             32)  # вырезаем все плитки из общего изображения
         self.bricks_sprites = self.creat_tile_group(bricks_layout, 'bricks')
 

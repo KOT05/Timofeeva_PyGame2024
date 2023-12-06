@@ -28,7 +28,7 @@ while True:
             sys.exit()
 
     # заливка фона
-    screen.fill((63, 56, 81))
+    screen.fill((2, 1, 32))
 
     # переход к другому уровню
     if level.should_change:
