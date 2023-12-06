@@ -9,6 +9,10 @@ class Level:
     def __init__(self, level_data, serface):
         self.display_serface = serface
 
+        self.should_change = False
+        self.should_restart = False
+        self.ignore_r = False
+
         # переменные для работы с ключами на уровне
         self.keys_get = False
 
