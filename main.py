@@ -19,7 +19,6 @@ def resturt_button(lv, pos):
             return True
 
 
-
 while True:
     # выход
     for event in pygame.event.get():
