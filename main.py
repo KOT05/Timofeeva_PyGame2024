@@ -5,7 +5,7 @@ from level_data import all_levels
 from classes import Button
 
 
-def resturt_button(lv, pos):
+def restart_button(lv, pos):
     for sprite in lv.button_sprites.sprites():
         if sprite.rect.colliderect(pos[0], pos[1], 1, 1):
             return True
@@ -43,7 +43,7 @@ def game_start():
         # проверка кнопки restart на экране
         pressed = pygame.mouse.get_pressed()
         if pressed[0]:
-            if resturt_button(level, pygame.mouse.get_pos()):
+            if restart_button(level, pygame.mouse.get_pos()):
                 level = Level(all_levels[level_ind], screen)
 
         # проверка смерти
