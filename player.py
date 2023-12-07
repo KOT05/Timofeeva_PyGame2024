@@ -11,7 +11,7 @@ class Player(pygame.sprite.Sprite):
         self.frame_index = 0
         self.image = self.frames[self.frame_index]
 
-        self.rect = self.image.get_rect(bottomleft=pos)
+        self.rect = self.image.get_rect(topleft=pos)
 
         # множество кнопок, которые игнорируются до определенного момента
         self.ignore = set()
