@@ -1,6 +1,6 @@
 import pygame
 from csv_work import import_csv_layout, import_cut_graphic
-from enemy import Enemy
+from enemy import Suriken
 from player import Player
 from tile import Tile, StaticTile, Door, AnimatedTile
 
@@ -39,9 +39,9 @@ class Level:
         self.thorn_sprites = self.creat_tile_group(thorn_layout, 'thorn')
 
         # СЛОЙ 6 настройка врага
-        enemy_layout = import_csv_layout(level_data['enemy'])  # получаем матрицу с индексами плиток
-        self.enemy_sprites = self.creat_tile_group(enemy_layout, 'enemy')
-        self.enemy_stop_sprites = self.creat_tile_group(enemy_layout, 'enemy_stop')
+        suriken_layout = import_csv_layout(level_data['suriken'])  # получаем матрицу с индексами плиток
+        self.suriken_sprites = self.creat_tile_group(suriken_layout, 'suriken')
+        self.suriken_stop_sprites = self.creat_tile_group(suriken_layout, 'suriken_stop')
 
         # СЛОЙ 7 настройка края игрового поля (кирипичей)
         button_layout = import_csv_layout(level_data['button'])
@@ -86,12 +86,12 @@ class Level:
                         sprite = AnimatedTile(32, 32, x, y, 'Resources/Tiles/Tiles_from_internet/15-Key')
                         sprites_group.add(sprite)
 
-                    elif typee == 'enemy' and col == '0':  # сам враг
+                    elif typee == 'suriken' and col == '0':  # сам враг
                         # создаем объект класса враг
-                        sprite = Enemy(x, y)
+                        sprite = Suriken(x, y)
                         sprites_group.add(sprite)
 
-                    elif typee == 'enemy_stop' and col == '1':  # ограничители для врагов
+                    elif typee == 'suriken_stop' and col == '1':  # ограничители для врагов
                         # создаем объект, нам не так важен класс, главное - его расположение
                         sprite = Tile(32, 32, x, y)
                         sprites_group.add(sprite)
@@ -120,11 +120,19 @@ class Level:
 
         return sprites_group
 
-    # разворот врага при встрече ограничителя
-    def enemy_reverse(self):
-        for enemy in self.enemy_sprites.sprites():
-            if pygame.sprite.spritecollide(enemy, self.enemy_stop_sprites, False):
-                enemy.reverse()
+    # разворот вертушки при встрече ограничителя
+    def suriken_reverse(self):
+        for suriken in self.suriken_sprites.sprites():
+            if pygame.sprite.spritecollide(suriken, self.suriken_stop_sprites, False):
+                suriken.reverse()
+
+    # столкновение с шипами
+    def suriken_fail(self):
+        player = self.player.sprite
+
+        for suriken in self.suriken_sprites.sprites():
+            if suriken.rect.colliderect(player.rect):  # если расположения совпадают
+                self.should_restart = True
 
     # взятие ключа
     def key_getting(self):
@@ -140,8 +148,8 @@ class Level:
                         for door in self.door_sprites.sprites():
                             door.animate()
 
-    # падение на шипы
-    def thorn_file(self):
+    # столкновение с шипами
+    def thorn_fail(self):
         player = self.player.sprite
 
         for thorn in self.thorn_sprites.sprites():
@@ -155,8 +163,6 @@ class Level:
 
         for sprite in self.bricks_sprites.sprites():
             if sprite.rect.colliderect(player.rect):  # если координаты гг и кирпичей совпадают, то
-                print(player.rect)
-                print(sprite.rect)
 
                 if player.direction.x < 0:  # если двигался налево, двигаем направо
                     player.rect.left = sprite.rect.right
@@ -198,15 +204,21 @@ class Level:
     def run(self):
         # матрицы с изображением плиток выводятся на экран
 
-        # кирпичи
-        self.bricks_sprites.draw(self.display_serface)
-
         # стена
         self.wall_sprites.draw(self.display_serface)
 
         # дверь
         self.door_sprites.draw(self.display_serface)
         self.door_sprites.update()
+
+        # вертушка
+        self.suriken_sprites.draw(self.display_serface)
+        self.suriken_sprites.update()
+        self.suriken_fail()
+        self.suriken_reverse()  # не надо ли развернуться
+
+        # кирпичи
+        self.bricks_sprites.draw(self.display_serface)
 
         # ключ
         self.key_sprites.draw(self.display_serface)
@@ -215,17 +227,12 @@ class Level:
 
         # шипы
         self.thorn_sprites.draw(self.display_serface)
-        self.thorn_file()
+        self.thorn_fail()
 
         # портал
         portal = self.portal()
         portal.draw(self.display_serface)
         portal.update()
-
-        # враги
-        self.enemy_sprites.draw(self.display_serface)
-        self.enemy_sprites.update()
-        self.enemy_reverse()  # не надо ли развернуться
 
         # кнопка restart
         self.button_sprites.draw(self.display_serface)
