@@ -1,4 +1,5 @@
 import pygame
+import ctypes
 import sys
 from level import Level
 from level_data import all_levels
@@ -92,6 +93,7 @@ def main_menu(screen):
 
 
 pygame.init()
+ctypes.windll.user32.SetProcessDPIAware()
 size = width, height = 640, 480
 screen = pygame.display.set_mode(size)
 main_menu(screen)
