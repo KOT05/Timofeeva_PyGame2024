@@ -13,14 +13,15 @@ def restart_button(lv, pos):
 
 
 def game_start():
-    screen = pygame.display.set_mode((1600, 832))
+    screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN)
     clock = pygame.time.Clock()
 
     # выбор уровня
     level_ind = 0
     level = Level(all_levels[level_ind], screen)
 
-    while True:
+    running = True
+    while running:
         # выход
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -41,6 +42,11 @@ def game_start():
         if keys[pygame.K_r]:
             level = Level(all_levels[level_ind], screen)
 
+        # выход через esc
+        if keys[pygame.K_ESCAPE]:
+            running = False
+            main_menu(main_screen)
+
         # проверка кнопки restart на экране
         pressed = pygame.mouse.get_pressed()
         if pressed[0]:
@@ -52,7 +58,7 @@ def game_start():
             level = Level(all_levels[level_ind], screen)
             level.should_restart = False
 
-            # запуск уровня
+        # запуск уровня
         level.run()
 
         pygame.display.update()
@@ -60,6 +66,7 @@ def game_start():
 
 
 def main_menu(screen):
+    pygame.display.set_mode((640, 480))
     start_button = Button('Играть', (250, 150), 150, 50, 'green', 'red', 'purple', 40)
     settings_button = Button('Настройки', (250, 210), 150, 50, 'green', 'red', 'purple', 40)
     exit_button = Button('Выход', (250, 270), 150, 50, 'green', 'red', 'purple', 40)
@@ -81,19 +88,20 @@ def main_menu(screen):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                pygame.quit()
+                sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if start_button.is_hovered(event.pos):
                     game_start()
                 elif exit_button.is_hovered(event.pos):
-                    running = False
+                    sys.exit()
                 elif settings_button.is_hovered(event.pos):
                     pass
-        pygame.display.flip()
+        pygame.display.update()
 
 
 pygame.init()
 ctypes.windll.user32.SetProcessDPIAware()
 size = width, height = 640, 480
-screen = pygame.display.set_mode(size)
-main_menu(screen)
+main_screen = pygame.display.set_mode(size)
+main_menu(main_screen)
