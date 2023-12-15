@@ -3,7 +3,9 @@ import ctypes
 import sys
 from level import Level
 from level_data import all_levels
-from classes import Button
+from functions import Button, rendering
+
+WIDTH, HEIGHT = 1920, 1080
 
 
 def restart_button(lv, pos):
@@ -13,7 +15,7 @@ def restart_button(lv, pos):
 
 
 def game_start():
-    screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN)
+    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
     clock = pygame.time.Clock()
 
     # выбор уровня
@@ -73,18 +75,12 @@ def main_menu(screen):
 
     running = True
     while running:
-        screen.fill((0, 0, 0))
-        main_background = pygame.image.load('Resources\Images\dream_TradingCard.jpg')
-        main_background = pygame.transform.scale(main_background, (640, 480))
-        screen.blit(main_background, (0, 0))
+        # отрисовка основных элементов на экране
+        rendering(screen, 'Побег', 'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
+
         start_button.draw(screen)
         settings_button.draw(screen)
         exit_button.draw(screen)
-
-        font = pygame.font.Font(None, 80)
-        text_surface = font.render("Побег", True, (255, 255, 255))
-        text_rect = text_surface.get_rect(center=(320, 100))
-        screen.blit(text_surface, text_rect)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -96,12 +92,73 @@ def main_menu(screen):
                 elif exit_button.is_hovered(event.pos):
                     sys.exit()
                 elif settings_button.is_hovered(event.pos):
+                    settings_menu(screen)
+
+        pygame.display.update()
+
+
+def settings_menu(screen):
+    audio_button = Button('Звук', (250, 150), 150, 50, 'green', 'red', 'purple', 40)
+    video_button = Button('Видео', (250, 210), 150, 50, 'green', 'red', 'purple', 40)
+    exit_button = Button('Выход', (250, 270), 150, 50, 'green', 'red', 'purple', 40)
+
+    running = True
+    while running:
+        rendering(screen, 'Настройки', 'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
+
+        audio_button.draw(screen)
+        video_button.draw(screen)
+        exit_button.draw(screen)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if audio_button.is_hovered(event.pos):
                     pass
+                elif video_button.is_hovered(event.pos):
+                    video_settings(main_screen)
+                elif exit_button.is_hovered(event.pos):
+                    running = False
+
+        pygame.display.update()
+
+
+def video_settings(screen):
+    global WIDTH, HEIGHT
+    resolution_button_1 = Button('800x600', (250, 150), 150, 50, 'green', 'red', 'purple', 40)
+    resolution_button_2 = Button('1280x720', (250, 210), 150, 50, 'green', 'red', 'purple', 40)
+    resolution_button_3 = Button('1920x1080', (250, 270), 150, 50, 'green', 'red', 'purple', 40)
+    exit_button = Button('Выход', (250, 330), 150, 50, 'green', 'red', 'purple', 40)
+
+    running = True
+    while running:
+        rendering(screen, 'Разрешение экрана', 'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
+
+        resolution_button_1.draw(screen)
+        resolution_button_2.draw(screen)
+        resolution_button_3.draw(screen)
+        exit_button.draw(screen)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if exit_button.is_hovered(event.pos):
+                    running = False
+                elif resolution_button_1.is_hovered(event.pos):
+                    WIDTH, HEIGHT = 800, 600
+                elif resolution_button_2.is_hovered(event.pos):
+                    WIDTH, HEIGHT = 1280, 720
+                elif resolution_button_3.is_hovered(event.pos):
+                    WIDTH, HEIGHT = 1920, 1080
+
         pygame.display.update()
 
 
 pygame.init()
 ctypes.windll.user32.SetProcessDPIAware()
-size = width, height = 640, 480
-main_screen = pygame.display.set_mode(size)
+main_screen = pygame.display.set_mode((640, 480))
 main_menu(main_screen)

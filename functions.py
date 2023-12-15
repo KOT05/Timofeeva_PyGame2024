@@ -30,3 +30,15 @@ class Button:
         if self.rect.collidepoint(mouse_pos):
             return True
         return False
+
+
+def rendering(screen, text, way_to_picture, picture_size, rect_center):
+    screen.fill((0, 0, 0))
+    main_background = pygame.image.load(way_to_picture)
+    main_background = pygame.transform.scale(main_background, picture_size)
+    screen.blit(main_background, (0, 0))
+
+    font = pygame.font.Font(None, 80)
+    text_surface = font.render(text, True, (255, 255, 255))
+    text_rect = text_surface.get_rect(center=rect_center)
+    screen.blit(text_surface, text_rect)
