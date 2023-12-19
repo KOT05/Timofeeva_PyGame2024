@@ -116,11 +116,13 @@ def settings_menu(screen):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if audio_button.is_hovered(event.pos):
-                    pass
+                    audio_settings(screen)
                 elif video_button.is_hovered(event.pos):
                     video_settings(main_screen)
                 elif exit_button.is_hovered(event.pos):
                     running = False
+            if event.type == pygame.K_ESCAPE:
+                running = False
 
         pygame.display.update()
 
@@ -154,6 +156,26 @@ def video_settings(screen):
                     WIDTH, HEIGHT = 1280, 720
                 elif resolution_button_3.is_hovered(event.pos):
                     WIDTH, HEIGHT = 1920, 1080
+
+        pygame.display.update()
+
+
+def audio_settings(screen):
+    exit_button = Button('Выход', (250, 330), 150, 50, 'green', 'red', 'purple', 40)
+
+    running = True
+    while running:
+        rendering(screen, 'Настройки звука', 'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
+
+        exit_button.draw(screen)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if exit_button.is_hovered(event.pos):
+                    running = False
 
         pygame.display.update()
 
