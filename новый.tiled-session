@@ -1,0 +1,103 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "Resources/levels/3/уровень 3.tmx",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "Resources/levels/1/уровень 1.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1010.6666666666665,
+                "y": 418
+            }
+        },
+        "Resources/levels/2/уровень 2.tmx": {
+            "scale": 0.7561580882352941,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 989.2111340707428,
+                "y": 544.1983712167254
+            }
+        },
+        "Resources/levels/3/уровень 3.tmx": {
+            "scale": 0.7561580882352941,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 956.1492646165066,
+                "y": 544.1983712167254
+            }
+        },
+        "Resources/tiles/наборы плиток/restart_новые.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Resources/tiles/наборы плиток/вертушка_новый.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Resources/tiles/наборы плиток/дверь_новые.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Resources/tiles/наборы плиток/кирпичи_новые.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Resources/tiles/наборы плиток/ключ_новые.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Resources/tiles/наборы плиток/старт_стоп_новые.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Resources/tiles/наборы плиток/шипы_новые.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "C:/Coding/YANDEXprojecrs/ProjectPygame/Resources/levels/3",
+    "last.imagePath": "C:/Coding/YANDEXprojecrs/ProjectPygame/Resources/tiles/Tiles_from_internet/22-Suriken",
+    "map.height": 34,
+    "map.lastUsedExportFilter": "CSV файлы (*.csv)",
+    "map.lastUsedFormat": "tmx",
+    "map.width": 60,
+    "openFiles": [
+        "Resources/levels/1/уровень 1.tmx",
+        "Resources/levels/2/уровень 2.tmx",
+        "Resources/levels/3/уровень 3.tmx",
+        "Resources/tiles/наборы плиток/кирпичи_новые.tsx",
+        "Resources/tiles/наборы плиток/дверь_новые.tsx",
+        "Resources/tiles/наборы плиток/старт_стоп_новые.tsx",
+        "Resources/tiles/наборы плиток/ключ_новые.tsx",
+        "Resources/tiles/наборы плиток/restart_новые.tsx",
+        "Resources/tiles/наборы плиток/шипы_новые.tsx",
+        "Resources/tiles/наборы плиток/вертушка_новый.tsx"
+    ],
+    "project": "новый.tiled-project",
+    "recentFiles": [
+        "Resources/levels/1/уровень 1.tmx",
+        "Resources/levels/2/уровень 2.tmx",
+        "Resources/tiles/наборы плиток/вертушка_новый.tsx",
+        "Resources/tiles/наборы плиток/шипы_новые.tsx",
+        "Resources/tiles/наборы плиток/restart_новые.tsx",
+        "Resources/tiles/наборы плиток/ключ_новые.tsx",
+        "Resources/tiles/наборы плиток/старт_стоп_новые.tsx",
+        "Resources/tiles/наборы плиток/дверь_новые.tsx",
+        "Resources/tiles/наборы плиток/кирпичи_новые.tsx",
+        "Resources/levels/3/уровень 3.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.type": 0
+}

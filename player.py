@@ -19,9 +19,9 @@ class Player(pygame.sprite.Sprite):
         # настройки для движения
         self.on_ground = True
         self.direction = pygame.math.Vector2(0, 0)
-        self.speed = 4
-        self.gravity = 0.8
-        self.jump_speed = -16
+        self.speed = 4.5
+        self.gravity = 0.9
+        self.jump_speed = -18
 
         # настройки для портала
         self.space_kol = 0
