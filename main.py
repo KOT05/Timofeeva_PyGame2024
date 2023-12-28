@@ -31,7 +31,7 @@ def game_start():
                 sys.exit()
 
         # заливка фона
-        screen.fill((2, 1, 32))
+        screen.fill((6, 5, 13))
 
         # переход к другому уровню
         if level.should_change:

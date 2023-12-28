@@ -1,16 +1,15 @@
 import pygame
 from tile import AnimatedTile
-from csv_work import import_folder
+from csv_work import import_cut_graphic, import_folder
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
 
-        # создание самого перса (пока квадратик)
-        self.frames = import_folder('Resources/Tiles/Tiles_from_internet/18-Main character/Idle Blink')
+        self.import_charecter_assets()
         self.frame_index = 0
-        self.image = self.frames[self.frame_index]
-
+        self.animation_speed = 0.15
+        self.image = self.animations['idle'][self.frame_index]
         self.rect = self.image.get_rect(topleft=pos)
 
         # множество кнопок, которые игнорируются до определенного момента
@@ -27,19 +26,26 @@ class Player(pygame.sprite.Sprite):
         self.space_kol = 0
         self.portal_sprites = pygame.sprite.Group()
 
+        # настройки для анимации
+        self.status = 'idle'
+        self.facing_right = True
+
     # управление персом
     def get_input(self):
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_RIGHT]: # стрелка вправо нажата
             self.direction.x = 1
+            self.facing_right = True
         elif keys[pygame.K_LEFT]: # стрелка влево нажата
             self.direction.x = -1
+            self.facing_right = False
         else:
             self.direction.x = 0
 
         # если стрелка вверх нажата, и ее нет в игнориремых, то прыгаем
         if keys[pygame.K_UP] and 'K_UP' not in self.ignore:
+            self.frame_index = 0
             self.jump()
             self.ignore.add('K_UP')  # пока кнопку не отожмут, мы ее игнорим
 
@@ -55,6 +61,15 @@ class Player(pygame.sprite.Sprite):
         elif not keys[pygame.K_SPACE]:  # кнопка отжата, далее не игноририм ее
             self.ignore.discard('K_SPACE')
 
+    def get_status(self):
+        if self.direction.y < 0:
+            self.status = 'jump'
+        elif self.direction.y > 0:
+            self.status = 'fall'
+        elif self.direction.x != 0:
+            self.status = 'run'
+        else:
+            self.status = 'idle'
 
     # добавляем гравитацию, чтобы падать после прыжка
     def apply_gravity(self):
@@ -68,11 +83,22 @@ class Player(pygame.sprite.Sprite):
             self.on_ground = False
 
     def animate(self):
-        self.frame_index += 0.15
-        self.image = self.frames[int(self.frame_index % len(self.frames))]
+        animation = self.animations[self.status]
+        self.frame_index += self.animation_speed
+
+        if self.frame_index >= len(animation):
+            self.frame_index = 0
+
+        image = animation[int(self.frame_index)]
+        if self.facing_right:
+            self.image = image
+        else:
+            flipped_image = pygame.transform.flip(image, True, False)
+            self.image = flipped_image
 
     def update(self):
         self.get_input()
+        self.get_status()
         self.animate()
 
     # работа с порталом
@@ -81,7 +107,7 @@ class Player(pygame.sprite.Sprite):
         if self.space_kol % 2 == 1:
             # получаем координаты для портала
             self.portal_x = self.rect.x
-            self.portal_y = self.rect.y + 8
+            self.portal_y = self.rect.y + 16
 
             # добавляем в группу портал, чтобы он отрисовывался
             self.portal_sprites.add(AnimatedTile(32, 32, self.portal_x, self.portal_y, 'Resources/Tiles/Tiles_from_internet/19-Portal'))
@@ -95,3 +121,11 @@ class Player(pygame.sprite.Sprite):
 
             # заново создаем пустую группу, чтобы портал не рисовался
             self.portal_sprites = pygame.sprite.Group()
+
+    def import_charecter_assets(self):
+        idle = import_cut_graphic('Resources/Tiles/Tiles_from_internet/18-Main character/idle_new.png', 38, 48)
+        run = import_cut_graphic('Resources/Tiles/Tiles_from_internet/18-Main character/run_new.png', 48, 48)
+        jump = import_cut_graphic('Resources/Tiles/Tiles_from_internet/18-Main character/jump_new.png', 48, 48)
+        fall = import_cut_graphic('Resources/Tiles/Tiles_from_internet/18-Main character/fall_new.png', 48, 48)
+
+        self.animations = {'idle': idle, 'run': run, 'jump': jump, 'fall': fall}
