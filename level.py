@@ -1,5 +1,5 @@
 import pygame
-from csv_work import import_csv_layout, import_cut_graphic
+from csv_work import import_csv_layout, import_cut_graphic, import_folder
 from enemy import Suriken
 from player import Player
 from tile import Tile, StaticTile, Door, AnimatedTile
@@ -48,6 +48,12 @@ class Level:
         self.tile_list = import_cut_graphic('Resources/Tiles/Tiles_from_internet/21-Button/restart.png', 32,
                                             32)  # вырезаем все плитки из общего изображения
         self.button_sprites = self.creat_tile_group(button_layout, 'button')
+
+        # СЛОЙ 8 настройка доп инфы
+        info_layout = import_csv_layout(level_data['info'])
+        self.tile_list = import_folder('Resources/Tiles/Tiles_from_internet/24-info/level_number')  # все изображения из файла
+        self.info_level_sprites = self.creat_tile_group(info_layout, 'info_level')
+        self.study_sprites = self.creat_tile_group(info_layout, 'study')
 
         # настройка игрока
         start_stop_layout = import_csv_layout(level_data['start_stop'])
@@ -116,6 +122,18 @@ class Level:
                         # создаем статичный объект
                         tile_surface = self.tile_list[int(col)]
                         sprite = StaticTile(32, 32, x, y, tile_surface)
+                        sprites_group.add(sprite)
+
+                    elif typee == 'info_level' and col in ['0', '1', '2']:
+                        # создаем статичный объект
+                        tile_surface = self.tile_list[int(col)]
+                        sprite = StaticTile(192, 64, x, y, tile_surface)
+                        sprites_group.add(sprite)
+
+                    elif typee == 'study' and col in ['3', '4']:
+                        # создаем объект с анимацией нажатия кнопок
+                        tile_surface = import_folder('Resources/Tiles/Tiles_from_internet/24-info/learn')[int(col) - 3]
+                        sprite = StaticTile(263, 97, x, y, tile_surface)
                         sprites_group.add(sprite)
 
         return sprites_group
@@ -236,6 +254,11 @@ class Level:
 
         # кнопка restart
         self.button_sprites.draw(self.display_serface)
+
+        # доп информация
+        self.info_level_sprites.draw(self.display_serface)
+        self.study_sprites.draw(self.display_serface)
+        self.study_sprites.update(0.08)
 
         # игрок
         self.player.update()

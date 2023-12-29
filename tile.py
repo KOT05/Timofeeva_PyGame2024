@@ -49,9 +49,9 @@ class AnimatedTile(Tile):
         self.frame_index = 0
         self.image = self.frames[self.frame_index]
 
-    def animate(self):
-        self.frame_index += 0.15
+    def animate(self, speed):
+        self.frame_index += speed
         self.image = self.frames[int(self.frame_index % len(self.frames))]
 
-    def update(self):
-        self.animate()
+    def update(self, speed=0.15):
+        self.animate(speed)
