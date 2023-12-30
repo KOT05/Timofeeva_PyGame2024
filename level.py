@@ -150,7 +150,7 @@ class Level:
 
         for suriken in self.suriken_sprites.sprites():
             if suriken.rect.colliderect(player.rect):  # если расположения совпадают
-                self.should_restart = True
+                player.dead_animation = [True, self]
 
     # взятие ключа
     def key_getting(self):
@@ -172,7 +172,7 @@ class Level:
 
         for thorn in self.thorn_sprites.sprites():
             if thorn.rect.colliderect(player.rect):  # если расположения совпадают
-                self.should_restart = True
+                player.dead_animation = [True, self]
 
     # не даем выйти игроку за рамки уровня по горизонтали
     def horizontal_movement_collision(self):

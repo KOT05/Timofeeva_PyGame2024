@@ -29,6 +29,7 @@ class Player(pygame.sprite.Sprite):
         # настройки для анимации
         self.status = 'idle'
         self.facing_right = True
+        self.dead_animation = [False, '']
 
     # управление персом
     def get_input(self):
@@ -63,12 +64,20 @@ class Player(pygame.sprite.Sprite):
 
     def get_status(self):
         if self.direction.y < 0:
+            if self.status != 'jump':
+                self.frame_index = 0
             self.status = 'jump'
         elif self.direction.y > 0:
+            if self.status != 'fall':
+                self.frame_index = 0
             self.status = 'fall'
         elif self.direction.x != 0:
+            if self.status != 'run':
+                self.frame_index = 0
             self.status = 'run'
         else:
+            if self.status != 'idle':
+                self.frame_index = 0
             self.status = 'idle'
 
     # добавляем гравитацию, чтобы падать после прыжка
@@ -88,6 +97,8 @@ class Player(pygame.sprite.Sprite):
 
         if self.frame_index >= len(animation):
             self.frame_index = 0
+            if self.status == 'dead':
+                self.dead_animation[1].should_restart = True
 
         image = animation[int(self.frame_index)]
         if self.facing_right:
@@ -97,9 +108,14 @@ class Player(pygame.sprite.Sprite):
             self.image = flipped_image
 
     def update(self):
-        self.get_input()
-        self.get_status()
-        self.animate()
+        if self.dead_animation[0]:
+            self.status = 'dead'
+            self.direction.x, self.direction.y = 0, 0
+            self.animate()
+        else:
+            self.get_input()
+            self.get_status()
+            self.animate()
 
     # работа с порталом
     def portal(self):
@@ -127,5 +143,6 @@ class Player(pygame.sprite.Sprite):
         run = import_cut_graphic('Resources/Tiles/Tiles_from_internet/18-Main character/run_new.png', 48, 48)
         jump = import_cut_graphic('Resources/Tiles/Tiles_from_internet/18-Main character/jump_new.png', 48, 48)
         fall = import_cut_graphic('Resources/Tiles/Tiles_from_internet/18-Main character/fall_new.png', 48, 48)
+        dead = import_cut_graphic('Resources/Tiles/Tiles_from_internet/18-Main character/dead_new.png', 48, 48)
 
-        self.animations = {'idle': idle, 'run': run, 'jump': jump, 'fall': fall}
+        self.animations = {'idle': idle, 'run': run, 'jump': jump, 'fall': fall, 'dead': dead}
