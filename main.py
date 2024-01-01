@@ -1,6 +1,4 @@
-import pygame
-import ctypes
-import sys
+import pygame, ctypes, sys
 from level import Level
 from level_data import all_levels
 from functions import Button, rendering
@@ -8,18 +6,13 @@ from functions import Button, rendering
 WIDTH, HEIGHT = 1920, 1080
 
 
-def restart_button(lv, pos):
-    for sprite in lv.button_sprites.sprites():
-        if sprite.rect.colliderect(pos[0], pos[1], 1, 1):
-            return True
-
-
-def game_start():
+def game_start(level_ind):
     screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+    screen.fill((6, 5, 13))
+
     clock = pygame.time.Clock()
 
     # выбор уровня
-    level_ind = 0
     level = Level(all_levels[level_ind], screen)
 
     running = True
@@ -29,31 +22,27 @@ def game_start():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-
-        # заливка фона
-        screen.fill((6, 5, 13))
+            elif event.type == pygame.KEYDOWN:
+                # если нажали esc, возвращаемся к главному окну
+                if event.key == pygame.K_ESCAPE:
+                    running = False
+                    main_menu(screen)
+                # если нажали r, то уровень начинается заново
+                elif event.key == pygame.K_r:
+                    level = Level(all_levels[level_ind], screen)
+            # проверка кнопки restart на экране
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                for sprite in level.button_sprites.sprites():
+                    # еслт координаты курсора совпадают с кнопкой, то уровень начинается заново
+                    if sprite.rect.colliderect(mouse_pos[0], mouse_pos[1], 1, 1):
+                        level = Level(all_levels[level_ind], screen)
 
         # переход к другому уровню
         if level.should_change:
             level_ind += 1
             level = Level(all_levels[level_ind], screen)
             level.should_change = False
-
-        # проверка кнопки R на клавиатуре
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_r]:
-            level = Level(all_levels[level_ind], screen)
-
-        # выход через esc
-        if keys[pygame.K_ESCAPE]:
-            running = False
-            main_menu(main_screen)
-
-        # проверка кнопки restart на экране
-        pressed = pygame.mouse.get_pressed()
-        if pressed[0]:
-            if restart_button(level, pygame.mouse.get_pos()):
-                level = Level(all_levels[level_ind], screen)
 
         # проверка смерти
         if level.should_restart:
@@ -83,12 +72,12 @@ def main_menu(screen):
         exit_button.draw(screen)
 
         for event in pygame.event.get():
-            if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE):
+            if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if start_button.is_hovered(event.pos):
-                    game_start()
+                    choose_level()
                 elif exit_button.is_hovered(event.pos):
                     sys.exit()
                 elif settings_button.is_hovered(event.pos):
@@ -178,6 +167,35 @@ def audio_settings(screen):
                     running = False
 
         pygame.display.update()
+
+def choose_level():
+    screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+
+    bg_image = pygame.image.load('Resources/tiles/Tiles_from_internet/choose level3.png')
+    screen.blit(bg_image, (0, 0))
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                pygame.quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse = pygame.mouse.get_pos()
+                # первый уровень, индекс 0
+                if 87 <= mouse[0] <= 201 and 430 <= mouse[1] <= 610:
+                    game_start(0)
+                # второй уровень, индекс 1
+                elif 265 <= mouse[0] <= 380 and 430 <= mouse[1] <= 610:
+                    game_start(1)
+                # третий уровень, индекс 2
+                elif 457 <= mouse[0] <= 597 and 430 <= mouse[1] <= 610:
+                    game_start(2)
+
+        pygame.display.update()
+
 
 
 pygame.init()
