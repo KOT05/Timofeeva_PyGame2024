@@ -25,8 +25,9 @@ def game_start(level_ind):
             elif event.type == pygame.KEYDOWN:
                 # если нажали esc, возвращаемся к главному окну
                 if event.key == pygame.K_ESCAPE:
+
                     running = False
-                    main_menu(screen)
+                    choose_level()
                 # если нажали r, то уровень начинается заново
                 elif event.key == pygame.K_r:
                     level = Level(all_levels[level_ind], screen)
@@ -107,7 +108,7 @@ def settings_menu(screen):
                 if audio_button.is_hovered(event.pos):
                     audio_settings(screen)
                 elif video_button.is_hovered(event.pos):
-                    video_settings(main_screen)
+                    video_settings(screen)
                 elif exit_button.is_hovered(event.pos):
                     running = False
             if event.type == pygame.K_ESCAPE:
@@ -168,6 +169,7 @@ def audio_settings(screen):
 
         pygame.display.update()
 
+
 def choose_level():
     screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
 
@@ -181,7 +183,7 @@ def choose_level():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                pygame.quit()
+                start()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse = pygame.mouse.get_pos()
                 # первый уровень, индекс 0
@@ -197,8 +199,11 @@ def choose_level():
         pygame.display.update()
 
 
+def start():
+    pygame.init()
+    ctypes.windll.user32.SetProcessDPIAware()
+    screen = pygame.display.set_mode((640, 480))
+    main_menu(screen)
 
-pygame.init()
-ctypes.windll.user32.SetProcessDPIAware()
-main_screen = pygame.display.set_mode((640, 480))
-main_menu(main_screen)
+
+start()
