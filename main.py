@@ -1,9 +1,12 @@
-import pygame, ctypes, sys
+import pygame
+import ctypes
+import sys
 from level import Level
 from level_data import all_levels
 from functions import Button, rendering, SoundPlayer
 
 WIDTH, HEIGHT = 1920, 1080
+SOUND_VOLUME = 0.25
 
 
 def game_start(level_ind):
@@ -66,7 +69,7 @@ def main_menu(screen):
     running = True
     while running:
         # отрисовка основных элементов на экране
-        rendering(screen, 'Побег', 'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
+        rendering(screen, 'Побег', r'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
 
         start_button.draw(screen)
         settings_button.draw(screen)
@@ -94,7 +97,7 @@ def settings_menu(screen):
 
     running = True
     while running:
-        rendering(screen, 'Настройки', 'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
+        rendering(screen, 'Настройки', r'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
 
         audio_button.draw(screen)
         video_button.draw(screen)
@@ -126,7 +129,7 @@ def video_settings(screen):
 
     running = True
     while running:
-        rendering(screen, 'Разрешение экрана', 'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
+        rendering(screen, 'Разрешение экрана', r'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
 
         resolution_button_1.draw(screen)
         resolution_button_2.draw(screen)
@@ -153,6 +156,8 @@ def video_settings(screen):
 
 
 def audio_settings(screen):
+    global SOUND_VOLUME
+
     volume_1 = Button('100%', (250, 150), 150, 50, 'green', 'red', 'purple', 40)
     volume_2 = Button('50%', (250, 210), 150, 50, 'green', 'red', 'purple', 40)
     volume_3 = Button('25%', (250, 270), 150, 50, 'green', 'red', 'purple', 40)
@@ -161,7 +166,7 @@ def audio_settings(screen):
 
     running = True
     while running:
-        rendering(screen, 'Настройки звука', 'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
+        rendering(screen, 'Настройки звука', r'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
 
         volume_1.draw(screen)
         volume_2.draw(screen)
@@ -173,18 +178,20 @@ def audio_settings(screen):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            elif event.type == pygame.MOUSEBUTTONDOWN:
                 if exit_button.is_hovered(event.pos):
                     running = False
-                elif volume_1.is_hovered(event.pos):
-                    Music_player.set_volume(1)
-                elif volume_2.is_hovered(event.pos):
-                    Music_player.set_volume(0.5)
-                elif volume_3.is_hovered(event.pos):
-                    Music_player.set_volume(0.25)
-                elif volume_4.is_hovered(event.pos):
-                    Music_player.set_volume(0)
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                else:
+                    if volume_1.is_hovered(event.pos):
+                        SOUND_VOLUME = 1
+                    elif volume_2.is_hovered(event.pos):
+                        SOUND_VOLUME = 0.5
+                    elif volume_3.is_hovered(event.pos):
+                        SOUND_VOLUME = 0.25
+                    elif volume_4.is_hovered(event.pos):
+                        SOUND_VOLUME = 0
+                    Music_player.set_volume(SOUND_VOLUME)
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
 
         pygame.display.update()
@@ -227,6 +234,6 @@ def start():
 
 
 Music_player = SoundPlayer()
-Music_player.play_music('resources\music\soundtrack.mp3')
+Music_player.play_music(r'resources\music\soundtrack.mp3', SOUND_VOLUME)
 
 start()

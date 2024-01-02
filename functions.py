@@ -42,9 +42,9 @@ class SoundPlayer:
         sound.set_volume(volume)  # Установка громкости
         sound.play()  # Проигрывание звука
 
-    def play_music(self, music_file, repeat=True):
+    def play_music(self, music_file, sound_volume, repeat=True):
         pygame.mixer.music.load(music_file)  # Загрузка музыкального файла
-        pygame.mixer.music.set_volume(0.25)
+        pygame.mixer.music.set_volume(sound_volume)
         pygame.mixer.music.play(-1 if repeat else 0)  # Проигрывание музыки с повтором (если указано)
 
     def pause_music(self):
