@@ -1,7 +1,7 @@
 import pygame, ctypes, sys
 from level import Level
 from level_data import all_levels
-from functions import Button, rendering
+from functions import Button, rendering, SoundPlayer
 
 WIDTH, HEIGHT = 1920, 1080
 
@@ -111,7 +111,7 @@ def settings_menu(screen):
                     video_settings(screen)
                 elif exit_button.is_hovered(event.pos):
                     running = False
-            if event.type == pygame.K_ESCAPE:
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
 
         pygame.display.update()
@@ -146,17 +146,27 @@ def video_settings(screen):
                     WIDTH, HEIGHT = 1280, 720
                 elif resolution_button_3.is_hovered(event.pos):
                     WIDTH, HEIGHT = 1920, 1080
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                running = False
 
         pygame.display.update()
 
 
 def audio_settings(screen):
-    exit_button = Button('Выход', (250, 330), 150, 50, 'green', 'red', 'purple', 40)
+    volume_1 = Button('100%', (250, 150), 150, 50, 'green', 'red', 'purple', 40)
+    volume_2 = Button('50%', (250, 210), 150, 50, 'green', 'red', 'purple', 40)
+    volume_3 = Button('25%', (250, 270), 150, 50, 'green', 'red', 'purple', 40)
+    volume_4 = Button('on/off', (250, 330), 150, 50, 'green', 'red', 'purple', 40)
+    exit_button = Button('Выход', (250, 390), 150, 50, 'green', 'red', 'purple', 40)
 
     running = True
     while running:
         rendering(screen, 'Настройки звука', 'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
 
+        volume_1.draw(screen)
+        volume_2.draw(screen)
+        volume_3.draw(screen)
+        volume_4.draw(screen)
         exit_button.draw(screen)
 
         for event in pygame.event.get():
@@ -166,6 +176,16 @@ def audio_settings(screen):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if exit_button.is_hovered(event.pos):
                     running = False
+                elif volume_1.is_hovered(event.pos):
+                    Music_player.set_volume(1)
+                elif volume_2.is_hovered(event.pos):
+                    Music_player.set_volume(0.5)
+                elif volume_3.is_hovered(event.pos):
+                    Music_player.set_volume(0.25)
+                elif volume_4.is_hovered(event.pos):
+                    Music_player.set_volume(0)
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                running = False
 
         pygame.display.update()
 
@@ -205,5 +225,8 @@ def start():
     screen = pygame.display.set_mode((640, 480))
     main_menu(screen)
 
+
+Music_player = SoundPlayer()
+Music_player.play_music('resources\music\soundtrack.mp3')
 
 start()

@@ -32,6 +32,7 @@ class Button:
         return False
 
 
+# класс музыкального проигрывателя
 class SoundPlayer:
     def __init__(self):
         pygame.mixer.init()  # Инициализация mixer'а
@@ -43,7 +44,7 @@ class SoundPlayer:
 
     def play_music(self, music_file, repeat=True):
         pygame.mixer.music.load(music_file)  # Загрузка музыкального файла
-        pygame.mixer.music.set_volume(0.2)
+        pygame.mixer.music.set_volume(0.25)
         pygame.mixer.music.play(-1 if repeat else 0)  # Проигрывание музыки с повтором (если указано)
 
     def pause_music(self):
@@ -51,6 +52,9 @@ class SoundPlayer:
 
     def unpause_music(self):
         pygame.mixer.music.unpause()  # Возобновление проигрывания музыки
+
+    def set_volume(self, volume):
+        pygame.mixer.music.set_volume(volume)
 
 
 def rendering(screen, text, way_to_picture, picture_size, rect_center):

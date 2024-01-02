@@ -2,6 +2,7 @@ import pygame
 from tile import AnimatedTile
 from csv_work import import_cut_graphic, import_folder
 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
@@ -29,16 +30,15 @@ class Player(pygame.sprite.Sprite):
         # настройки для анимации
         self.status = 'idle'
         self.facing_right = True
-        self.dead_animation = [False, '']
 
     # управление персом
     def get_input(self):
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_RIGHT]: # стрелка вправо нажата
+        if keys[pygame.K_RIGHT]:  # стрелка вправо нажата
             self.direction.x = 1
             self.facing_right = True
-        elif keys[pygame.K_LEFT]: # стрелка влево нажата
+        elif keys[pygame.K_LEFT]:  # стрелка влево нажата
             self.direction.x = -1
             self.facing_right = False
         else:
@@ -50,7 +50,7 @@ class Player(pygame.sprite.Sprite):
             self.jump()
             self.ignore.add('K_UP')  # пока кнопку не отожмут, мы ее игнорим
 
-        elif not keys[pygame.K_UP]: # кнопка отжата, далее не игноририм ее
+        elif not keys[pygame.K_UP]:  # кнопка отжата, далее не игноририм ее
             self.ignore.discard('K_UP')
 
         # если space, и ее нет в игнориремых, то вызываем функциюю portal()
@@ -64,20 +64,12 @@ class Player(pygame.sprite.Sprite):
 
     def get_status(self):
         if self.direction.y < 0:
-            if self.status != 'jump':
-                self.frame_index = 0
             self.status = 'jump'
         elif self.direction.y > 0:
-            if self.status != 'fall':
-                self.frame_index = 0
             self.status = 'fall'
         elif self.direction.x != 0:
-            if self.status != 'run':
-                self.frame_index = 0
             self.status = 'run'
         else:
-            if self.status != 'idle':
-                self.frame_index = 0
             self.status = 'idle'
 
     # добавляем гравитацию, чтобы падать после прыжка
@@ -87,7 +79,7 @@ class Player(pygame.sprite.Sprite):
 
     # прыгаем
     def jump(self):
-        if self.on_ground: # прыгать можем только с кирпичей
+        if self.on_ground:  # прыгать можем только с кирпичей
             self.direction.y = self.jump_speed
             self.on_ground = False
 
@@ -97,8 +89,6 @@ class Player(pygame.sprite.Sprite):
 
         if self.frame_index >= len(animation):
             self.frame_index = 0
-            if self.status == 'dead':
-                self.dead_animation[1].should_restart = True
 
         image = animation[int(self.frame_index)]
         if self.facing_right:
@@ -108,14 +98,9 @@ class Player(pygame.sprite.Sprite):
             self.image = flipped_image
 
     def update(self):
-        if self.dead_animation[0]:
-            self.status = 'dead'
-            self.direction.x, self.direction.y = 0, 0
-            self.animate()
-        else:
-            self.get_input()
-            self.get_status()
-            self.animate()
+        self.get_input()
+        self.get_status()
+        self.animate()
 
     # работа с порталом
     def portal(self):
@@ -126,7 +111,8 @@ class Player(pygame.sprite.Sprite):
             self.portal_y = self.rect.y + 16
 
             # добавляем в группу портал, чтобы он отрисовывался
-            self.portal_sprites.add(AnimatedTile(32, 32, self.portal_x, self.portal_y, 'Resources/Tiles/Tiles_from_internet/19-Portal'))
+            self.portal_sprites.add(
+                AnimatedTile(32, 32, self.portal_x, self.portal_y, 'Resources/Tiles/Tiles_from_internet/19-Portal'))
 
         # если четное, то перемещаем игрока на место портала
         elif self.space_kol != 0:
@@ -143,6 +129,5 @@ class Player(pygame.sprite.Sprite):
         run = import_cut_graphic('Resources/Tiles/Tiles_from_internet/18-Main character/run_new.png', 48, 48)
         jump = import_cut_graphic('Resources/Tiles/Tiles_from_internet/18-Main character/jump_new.png', 48, 48)
         fall = import_cut_graphic('Resources/Tiles/Tiles_from_internet/18-Main character/fall_new.png', 48, 48)
-        dead = import_cut_graphic('Resources/Tiles/Tiles_from_internet/18-Main character/dead_new.png', 48, 48)
 
-        self.animations = {'idle': idle, 'run': run, 'jump': jump, 'fall': fall, 'dead': dead}
+        self.animations = {'idle': idle, 'run': run, 'jump': jump, 'fall': fall}
