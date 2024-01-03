@@ -11,7 +11,6 @@ SOUND_VOLUME = 0.25
 
 def game_start(level_ind):
     screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
-    screen.fill((6, 5, 13))
 
     clock = pygame.time.Clock()
 
@@ -42,11 +41,15 @@ def game_start(level_ind):
                     if sprite.rect.colliderect(mouse_pos[0], mouse_pos[1], 1, 1):
                         level = Level(all_levels[level_ind], screen)
 
+        screen.fill((6, 5, 13))
+
         # переход к другому уровню
         if level.should_change:
             level_ind += 1
             level = Level(all_levels[level_ind], screen)
+
             level.should_change = False
+            level.should_change_ind = 0
 
         # проверка смерти
         if level.should_restart:
@@ -200,7 +203,7 @@ def audio_settings(screen):
 def choose_level():
     screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
 
-    bg_image = pygame.image.load('Resources/tiles/Tiles_from_internet/choose level3.png')
+    bg_image = pygame.image.load('Resources/tiles/Tiles_from_internet/choose level.png')
     screen.blit(bg_image, (0, 0))
 
     running = True
@@ -210,17 +213,17 @@ def choose_level():
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                start()
+                main_menu(screen)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse = pygame.mouse.get_pos()
                 # первый уровень, индекс 0
-                if 87 <= mouse[0] <= 201 and 430 <= mouse[1] <= 610:
+                if 114 <= mouse[0] <= 267 and 456 <= mouse[1] <= 753:
                     game_start(0)
                 # второй уровень, индекс 1
-                elif 265 <= mouse[0] <= 380 and 430 <= mouse[1] <= 610:
+                elif 978 <= mouse[0] <= 1134 and 456 <= mouse[1] <= 753:
                     game_start(1)
                 # третий уровень, индекс 2
-                elif 457 <= mouse[0] <= 597 and 430 <= mouse[1] <= 610:
+                elif 1554 <= mouse[0] <= 1713 and 456 <= mouse[1] <= 753:
                     game_start(2)
 
         pygame.display.update()

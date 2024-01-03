@@ -10,6 +10,8 @@ class Level:
         self.display_serface = serface
 
         self.should_change = False
+        self.should_change_1 = False
+        self.should_change_ind = 0
         self.should_restart = False
         self.ignore_r = False
 
@@ -54,6 +56,10 @@ class Level:
         self.tile_list = import_folder('Resources/Tiles/Tiles_from_internet/24-info/level_number')  # все изображения из файла
         self.info_level_sprites = self.creat_tile_group(info_layout, 'info_level')
         self.study_sprites = self.creat_tile_group(info_layout, 'study')
+
+        # СЛОЙ 9 переключение между уровнями
+        between_layout = import_csv_layout('Resources/Levels/1/уровень 1_между.csv')
+        self.between_sprites = self.creat_tile_group(between_layout, 'between')
 
         # настройка игрока
         start_stop_layout = import_csv_layout(level_data['start_stop'])
@@ -136,6 +142,11 @@ class Level:
                         sprite = StaticTile(263, 97, x, y, tile_surface)
                         sprites_group.add(sprite)
 
+                    elif typee == 'between':
+                        # создаем анимированный объект
+                        sprite = AnimatedTile(1920, 1080, x, y, 'Resources/Tiles/Tiles_from_internet/23-Between levels')
+                        sprites_group.add(sprite)
+
         return sprites_group
 
     # разворот вертушки при встрече ограничителя
@@ -213,7 +224,7 @@ class Level:
         for sprite in self.end_sprites.sprites():
             # если координаты гг и координаты плиток финиша совпадают и все ключи собраны, пока меняеем цвет
             if sprite.rect.colliderect(player.rect) and self.keys_get:
-                self.should_change = True
+                self.should_change_1 = True
 
     def portal(self):
         player = self.player.sprite
@@ -266,3 +277,11 @@ class Level:
         self.vertical_movement_collision()  # достигли ли кирпичей по вертикали
         self.the_end_of_level()  # дошли ли до конца
         self.player.draw(self.display_serface)
+
+        if self.should_change_1:
+            if self.should_change_ind < 45:
+                self.between_sprites.draw(self.display_serface)
+                self.between_sprites.update(0.08)
+                self.should_change_ind += 1
+            if self.should_change_ind >= 45:
+                self.should_change = True
