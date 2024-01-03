@@ -1,6 +1,6 @@
 import pygame
 from tile import AnimatedTile
-from csv_work import import_cut_graphic, import_folder
+from csv_work import import_cut_graphic
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos):
@@ -35,22 +35,22 @@ class Player(pygame.sprite.Sprite):
     def get_input(self):
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_RIGHT]: # стрелка вправо нажата
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:  # стрелка вправо нажата
             self.direction.x = 1
             self.facing_right = True
-        elif keys[pygame.K_LEFT]: # стрелка влево нажата
+        elif keys[pygame.K_LEFT] or keys[pygame.K_a]:  # стрелка влево нажата
             self.direction.x = -1
             self.facing_right = False
         else:
             self.direction.x = 0
 
-        # если стрелка вверх нажата, и ее нет в игнориремых, то прыгаем
-        if keys[pygame.K_UP] and 'K_UP' not in self.ignore:
+            # если стрелка вверх нажата, и ее нет в игнориремых, то прыгаем
+        if (keys[pygame.K_UP] or keys[pygame.K_w]) and 'K_UP' not in self.ignore:
             self.frame_index = 0
             self.jump()
             self.ignore.add('K_UP')  # пока кнопку не отожмут, мы ее игнорим
 
-        elif not keys[pygame.K_UP]: # кнопка отжата, далее не игноририм ее
+        elif not (keys[pygame.K_UP] or keys[pygame.K_w]):  # кнопка отжата, далее не игноририм ее
             self.ignore.discard('K_UP')
 
         # если space, и ее нет в игнориремых, то вызываем функциюю portal()

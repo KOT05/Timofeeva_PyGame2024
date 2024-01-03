@@ -49,7 +49,6 @@ def game_start(level_ind):
             level = Level(all_levels[level_ind], screen)
 
             level.should_change = False
-            level.should_change_ind = 0
 
         # проверка смерти
         if level.should_restart:
@@ -212,9 +211,9 @@ def choose_level():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 main_menu(screen)
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse = pygame.mouse.get_pos()
                 # первый уровень, индекс 0
                 if 114 <= mouse[0] <= 267 and 456 <= mouse[1] <= 753:
