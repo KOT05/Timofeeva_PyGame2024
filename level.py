@@ -152,9 +152,14 @@ class Level:
     # столкновение с шипами
     def suriken_fail(self):
         player = self.player.sprite
+        player_mask = pygame.mask.from_surface(player.image)
+        player_cord = [player.rect.x, player.rect.y]
 
         for suriken in self.suriken_sprites.sprites():
-            if suriken.rect.colliderect(player.rect):  # если расположения совпадают
+            suriken_mask = pygame.mask.from_surface(suriken.image)
+            suriken_cord = [suriken.rect.x, suriken.rect.y]
+
+            if player_mask.overlap(suriken_mask,(abs(player_cord[0] - suriken_cord[0]), abs(player_cord[1] - suriken_cord[1]))):
                 player.dead_animation = [True, self]
 
     # взятие ключа
@@ -174,10 +179,16 @@ class Level:
     # столкновение с шипами
     def thorn_fail(self):
         player = self.player.sprite
+        player_mask = pygame.mask.from_surface(player.image)
+        player_cord = [player.rect.x, player.rect.y]
 
         for thorn in self.thorn_sprites.sprites():
-            if thorn.rect.colliderect(player.rect):  # если расположения совпадают
+            thorn_mask = pygame.mask.from_surface(thorn.image)
+            thorn_cord = [thorn.rect.x, thorn.rect.y]
+
+            if player_mask.overlap(thorn_mask, (abs(player_cord[0] - thorn_cord[0]), abs(player_cord[1] - thorn_cord[1]))):
                 player.dead_animation = [True, self]
+
 
     # не даем выйти игроку за рамки уровня по горизонтали
     def horizontal_movement_collision(self):

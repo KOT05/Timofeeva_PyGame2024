@@ -24,7 +24,7 @@ class Door(Tile):
 
         # вырезаем все плитки, подготавливаем первую картинку двери
         self.frame_index = 0
-        self.frames = import_cut_graphic('Resources/Tiles/Tiles_from_internet/11-Door/door.png', 64, 64)
+        self.frames = import_cut_graphic('Resources/Tiles/Tiles_from_internet/11-Door/door1.png', 64, 64)
         self.image = self.frames[self.frame_index]
         self.rect = self.image.get_rect(bottomleft=(x, y))
 
