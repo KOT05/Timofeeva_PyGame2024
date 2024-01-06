@@ -81,9 +81,10 @@ class Player(pygame.sprite.Sprite):
             self.status = 'idle'
 
     # добавляем гравитацию, чтобы падать после прыжка
-    def apply_gravity(self):
-        self.direction.y += self.gravity
-        self.rect.y += self.direction.y
+    def apply_gravity(self, pause):
+        if not pause:
+            self.direction.y += self.gravity
+            self.rect.y += self.direction.y
 
     # прыгаем
     def jump(self):

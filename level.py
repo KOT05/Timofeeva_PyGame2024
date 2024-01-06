@@ -12,6 +12,7 @@ class Level:
         self.should_change = False
         self.should_restart = False
         self.ignore_r = False
+        self.pause = False
 
         # переменные для работы с ключами на уровне
         self.keys_get = False
@@ -43,9 +44,9 @@ class Level:
         self.suriken_sprites = self.creat_tile_group(suriken_layout, 'suriken')
         self.suriken_stop_sprites = self.creat_tile_group(suriken_layout, 'suriken_stop')
 
-        # СЛОЙ 7 настройка края игрового поля (кирипичей)
+        # СЛОЙ 7 настройка кнопки для паузы
         button_layout = import_csv_layout(level_data['button'])
-        self.tile_list = import_cut_graphic('Resources/Tiles/Tiles_from_internet/21-Button/restart.png', 32,
+        self.tile_list = import_cut_graphic('Resources/Tiles/Tiles_from_internet/21-Button/pause.png', 32,
                                             32)  # вырезаем все плитки из общего изображения
         self.button_sprites = self.creat_tile_group(button_layout, 'button')
 
@@ -54,11 +55,6 @@ class Level:
         self.tile_list = import_folder('Resources/Tiles/Tiles_from_internet/24-info/level_number')  # все изображения из файла
         self.info_level_sprites = self.creat_tile_group(info_layout, 'info_level')
         self.study_sprites = self.creat_tile_group(info_layout, 'study')
-
-        # СЛОЙ 9 переключение между уровнями
-        between_layout = import_csv_layout('Resources/Levels/1/уровень 1_между.csv')
-        self.between_start_sprites = self.creat_tile_group(between_layout, 'between_start')
-        self.between_end_sprites = self.creat_tile_group(between_layout, 'between_end')
 
         # настройка игрока
         start_stop_layout = import_csv_layout(level_data['start_stop'])
@@ -193,6 +189,10 @@ class Level:
     # не даем выйти игроку за рамки уровня по горизонтали
     def horizontal_movement_collision(self):
         player = self.player.sprite
+
+        if self.pause:
+            player.direction.x = 0
+
         player.rect.x += player.direction.x * player.speed  # меняем расположение игрока
 
         for sprite in self.bricks_sprites.sprites():
@@ -207,7 +207,7 @@ class Level:
     # не даем выйти игроку за рамки уровня по вертикали
     def vertical_movement_collision(self):
         player = self.player.sprite
-        player.apply_gravity()  # 'включаем' гравитацию
+        player.apply_gravity(self.pause)  # 'включаем' гравитацию
 
         for sprite in self.bricks_sprites.sprites():
             if sprite.rect.colliderect(player.rect):  # если координаты гг и кирпичей совпадают, то
@@ -243,11 +243,9 @@ class Level:
 
         # дверь
         self.door_sprites.draw(self.display_serface)
-        self.door_sprites.update()
 
         # вертушка
         self.suriken_sprites.draw(self.display_serface)
-        self.suriken_sprites.update()
         self.suriken_fail()
         self.suriken_reverse()  # не надо ли развернуться
 
@@ -257,7 +255,6 @@ class Level:
         # ключ
         self.key_sprites.draw(self.display_serface)
         self.key_getting()  # проверяем, не взяли ли ключ
-        self.key_sprites.update()
 
         # шипы
         self.thorn_sprites.draw(self.display_serface)
@@ -266,7 +263,6 @@ class Level:
         # портал
         portal = self.portal()
         portal.draw(self.display_serface)
-        portal.update()
 
         # кнопка restart
         self.button_sprites.draw(self.display_serface)
@@ -274,11 +270,25 @@ class Level:
         # доп информация
         self.info_level_sprites.draw(self.display_serface)
         self.study_sprites.draw(self.display_serface)
-        self.study_sprites.update(0.08)
 
         # игрок
-        self.player.update()
         self.horizontal_movement_collision()  # достигли ли кирпичей по горизонтали
         self.vertical_movement_collision()  # достигли ли кирпичей по вертикали
         self.the_end_of_level()  # дошли ли до конца
         self.player.draw(self.display_serface)
+
+        if not self.pause:
+            self.door_sprites.update()
+            self.suriken_sprites.update()
+            self.key_sprites.update()
+            portal.update()
+            self.study_sprites.update()
+            self.player.update()
+        else:
+            background = pygame.Surface((1920, 1080))
+            background.set_alpha(100)  # прозрачность
+            pygame.draw.rect(background, (128, 128, 128), background.get_rect())
+            self.display_serface.blit(background, (0, 0))
+
+            pause_image = pygame.image.load('Resources/tiles/Tiles_from_internet/pause menu.png')
+            self.display_serface.blit(pause_image, (0, 0))
