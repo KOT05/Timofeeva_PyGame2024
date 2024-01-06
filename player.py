@@ -127,7 +127,8 @@ class Player(pygame.sprite.Sprite):
             self.portal_y = self.rect.y + 16
 
             # добавляем в группу портал, чтобы он отрисовывался
-            self.portal_sprites.add(AnimatedTile(32, 32, self.portal_x, self.portal_y, 'Resources/Tiles/Tiles_from_internet/19-Portal'))
+            portal = AnimatedTile(32, 32, self.portal_x, self.portal_y, 'Resources/Tiles/Tiles_from_internet/19-Portal')
+            self.portal_sprites.add(portal)
 
         # если четное, то перемещаем игрока на место портала
         elif self.space_kol != 0:

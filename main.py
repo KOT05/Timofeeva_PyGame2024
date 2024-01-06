@@ -4,12 +4,15 @@ import sys
 from level import Level
 from level_data import all_levels
 from functions import Button, rendering, SoundPlayer
+from csv_work import import_folder
 
 WIDTH, HEIGHT = 1920, 1080
 SOUND_VOLUME = 0.25
+max_ind = set()
 
 
 def game_start(level_ind):
+    global max_ind
     screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
     clock = pygame.time.Clock()
 
@@ -34,6 +37,15 @@ def game_start(level_ind):
                     elif 1168 <= mouse[0] <= 1300 and 464 <= mouse[1] <= 596:
                         level.pause = False
                         choose_level(screen)
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE or event.key == pygame.K_p:
+                        level.pause = False
+                    elif event.key == pygame.K_m:
+                        level.pause = False
+                        choose_level(screen)
+                    elif event.key == pygame.K_r:
+                        level.pause = False
+                        level = Level(all_levels[level_ind], screen)
         # если паузы нет
         else:
             for event in pygame.event.get():
@@ -61,6 +73,7 @@ def game_start(level_ind):
             # переход к другому уровню
             if level.should_change:
                 level_ind += 1
+                max_ind.add(level_ind)
                 level = Level(all_levels[level_ind], screen)
 
                 level.should_change = False
@@ -97,8 +110,8 @@ def main_menu(screen):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if start_button.is_hovered(event.pos):
-                    choose_level(screen)
-                    # game_start(0)
+                    # choose_level(screen)
+                    game_start(0)
                 elif exit_button.is_hovered(event.pos):
                     sys.exit()
                 elif settings_button.is_hovered(event.pos):
@@ -216,7 +229,7 @@ def audio_settings(screen):
 
 def choose_level(screen):
     pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
-    bg_image = pygame.image.load('Resources/tiles/Tiles_from_internet/choose level.png')
+    bg_image = pygame.image.load(f'Resources/tiles/Tiles_from_internet/25-Choose level/choose level{len(max_ind) + 1}.png')
     screen.blit(bg_image, (0, 0))
 
     running = True
@@ -230,14 +243,23 @@ def choose_level(screen):
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse = pygame.mouse.get_pos()
                 # первый уровень, индекс 0
-                if 114 <= mouse[0] <= 267 and 456 <= mouse[1] <= 753:
+                if 114 <= mouse[0] <= 270 and 135 <= mouse[1] <= 432:
                     game_start(0)
                 # второй уровень, индекс 1
-                elif 978 <= mouse[0] <= 1134 and 456 <= mouse[1] <= 753:
+                elif 633 <= mouse[0] <= 786 and 135 <= mouse[1] <= 432 and len(max_ind) >= 1:
                     game_start(1)
                 # третий уровень, индекс 2
-                elif 1554 <= mouse[0] <= 1713 and 456 <= mouse[1] <= 753:
+                elif 1500 <= mouse[0] <= 1656 and 135 <= mouse[1] <= 432 and len(max_ind) >= 2:
                     game_start(2)
+                # четвертый уровень, индекс 3
+                elif 111 <= mouse[0] <= 267 and 546 <= mouse[1] <= 846 and len(max_ind) >= 3:
+                    game_start(3)
+                # пятый уровень, индекс 4
+                elif 975 <= mouse[0] <= 1131 and 546 <= mouse[1] <= 846 and len(max_ind) >= 4:
+                    game_start(4)
+                # шестой уровень, индекс 5
+                elif 978 <= mouse[0] <= 1134 and 1545 <= mouse[1] <= 1701 and len(max_ind) >= 5:
+                    game_start(5)
 
         pygame.display.update()
 
