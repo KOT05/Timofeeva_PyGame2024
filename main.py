@@ -60,6 +60,12 @@ def game_start(level_ind):
                 # если нажали r, то уровень начинается заново
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
                     level = Level(all_levels[level_ind], screen)
+                # если нажали p, то пауза
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
+                    level.pause = True
+                # если нажали m, то к окну выбору уровня
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_m:
+                    choose_level(screen)
                 # проверка кнопки pause на экране
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = pygame.mouse.get_pos()
