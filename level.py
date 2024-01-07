@@ -197,7 +197,6 @@ class Level:
 
         for sprite in self.bricks_sprites.sprites():
             if sprite.rect.colliderect(player.rect):  # если координаты гг и кирпичей совпадают, то
-
                 if player.direction.x < 0:  # если двигался налево, двигаем направо
                     player.rect.left = sprite.rect.right
 
@@ -211,7 +210,6 @@ class Level:
 
         for sprite in self.bricks_sprites.sprites():
             if sprite.rect.colliderect(player.rect):  # если координаты гг и кирпичей совпадают, то
-
                 if player.direction.y > 0:  # если двигался вниз, двигаем вверх
                     player.rect.bottom = sprite.rect.top
                     player.direction.y = 0  # обнуляем направление, чтобы не накапливалась гравитация

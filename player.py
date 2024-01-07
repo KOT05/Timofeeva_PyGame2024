@@ -131,10 +131,10 @@ class Player(pygame.sprite.Sprite):
             self.portal_sprites.add(portal)
 
         # если четное, то перемещаем игрока на место портала
-        elif self.space_kol != 0:
+        elif self.space_kol % 2 == 0 and self.space_kol != 0:
             # перемещаем игрока на координаты портала и игнорируем прыжок
             self.rect.x = self.portal_x
-            self.rect.y = self.portal_y
+            self.rect.y = self.portal_y - 16
             self.on_ground = False
 
             # заново создаем пустую группу, чтобы портал не рисовался
