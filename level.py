@@ -3,11 +3,14 @@ from csv_work import import_csv_layout, import_cut_graphic, import_folder
 from enemy import Suriken
 from player import Player
 from tile import Tile, StaticTile, Door, AnimatedTile
+from functions import SoundPlayer
+
+key_sound = SoundPlayer()
 
 
 class Level:
-    def __init__(self, level_data, serface):
-        self.display_serface = serface
+    def __init__(self, level_data, surface):
+        self.display_surface = surface
 
         self.should_change = False
         self.should_restart = False
@@ -52,7 +55,8 @@ class Level:
 
         # СЛОЙ 8 настройка доп инфы
         info_layout = import_csv_layout(level_data['info'])
-        self.tile_list = import_folder('Resources/Tiles/Tiles_from_internet/24-info/level_number')  # все изображения из файла
+        self.tile_list = import_folder(
+            'Resources/Tiles/Tiles_from_internet/24-info/level_number')  # все изображения из файла
         self.info_level_sprites = self.creat_tile_group(info_layout, 'info_level')
         self.study_sprites = self.creat_tile_group(info_layout, 'study')
 
@@ -155,7 +159,8 @@ class Level:
             suriken_mask = pygame.mask.from_surface(suriken.image)
             suriken_cord = [suriken.rect.x, suriken.rect.y]
 
-            if player_mask.overlap(suriken_mask,(abs(player_cord[0] - suriken_cord[0]), abs(player_cord[1] - suriken_cord[1]))):
+            if player_mask.overlap(suriken_mask,
+                                   (abs(player_cord[0] - suriken_cord[0]), abs(player_cord[1] - suriken_cord[1]))):
                 player.dead_animation = [True, self]
 
     # взятие ключа
@@ -165,6 +170,7 @@ class Level:
 
             for key in self.key_sprites.sprites():
                 if key.rect.colliderect(player.rect):  # если расположения совпадают
+                    key_sound.play_sound(r'resources\music\key_sound.mp3', 0.25)
                     key.kill()
 
                     if len(self.key_sprites) == 0:
@@ -182,9 +188,9 @@ class Level:
             thorn_mask = pygame.mask.from_surface(thorn.image)
             thorn_cord = [thorn.rect.x, thorn.rect.y]
 
-            if player_mask.overlap(thorn_mask, (abs(player_cord[0] - thorn_cord[0]), abs(player_cord[1] - thorn_cord[1]))):
+            if player_mask.overlap(thorn_mask,
+                                   (abs(player_cord[0] - thorn_cord[0]), abs(player_cord[1] - thorn_cord[1]))):
                 player.dead_animation = [True, self]
-
 
     # не даем выйти игроку за рамки уровня по горизонтали
     def horizontal_movement_collision(self):
@@ -237,43 +243,43 @@ class Level:
         # матрицы с изображением плиток выводятся на экран
 
         # стена
-        self.wall_sprites.draw(self.display_serface)
+        self.wall_sprites.draw(self.display_surface)
 
         # дверь
-        self.door_sprites.draw(self.display_serface)
+        self.door_sprites.draw(self.display_surface)
 
         # вертушка
-        self.suriken_sprites.draw(self.display_serface)
+        self.suriken_sprites.draw(self.display_surface)
         self.suriken_fail()
         self.suriken_reverse()  # не надо ли развернуться
 
         # кирпичи
-        self.bricks_sprites.draw(self.display_serface)
+        self.bricks_sprites.draw(self.display_surface)
 
         # ключ
-        self.key_sprites.draw(self.display_serface)
+        self.key_sprites.draw(self.display_surface)
         self.key_getting()  # проверяем, не взяли ли ключ
 
         # шипы
-        self.thorn_sprites.draw(self.display_serface)
+        self.thorn_sprites.draw(self.display_surface)
         self.thorn_fail()
 
         # портал
         portal = self.portal()
-        portal.draw(self.display_serface)
+        portal.draw(self.display_surface)
 
         # кнопка restart
-        self.button_sprites.draw(self.display_serface)
+        self.button_sprites.draw(self.display_surface)
 
         # доп информация
-        self.info_level_sprites.draw(self.display_serface)
-        self.study_sprites.draw(self.display_serface)
+        self.info_level_sprites.draw(self.display_surface)
+        self.study_sprites.draw(self.display_surface)
 
         # игрок
         self.horizontal_movement_collision()  # достигли ли кирпичей по горизонтали
         self.vertical_movement_collision()  # достигли ли кирпичей по вертикали
         self.the_end_of_level()  # дошли ли до конца
-        self.player.draw(self.display_serface)
+        self.player.draw(self.display_surface)
 
         if not self.pause:
             self.door_sprites.update()
@@ -286,7 +292,7 @@ class Level:
             background = pygame.Surface((1920, 1080))
             background.set_alpha(100)  # прозрачность
             pygame.draw.rect(background, (128, 128, 128), background.get_rect())
-            self.display_serface.blit(background, (0, 0))
+            self.display_surface.blit(background, (0, 0))
 
             pause_image = pygame.image.load('Resources/tiles/Tiles_from_internet/pause menu.png')
-            self.display_serface.blit(pause_image, (0, 0))
+            self.display_surface.blit(pause_image, (0, 0))

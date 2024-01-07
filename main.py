@@ -95,6 +95,7 @@ def game_start(level_ind):
         pygame.display.update()
         clock.tick(60)
 
+
 def main_menu(screen):
     pygame.display.set_mode((640, 480))
     start_button = Button('Играть', (250, 150), 150, 50, 'green', 'red', 'purple', 40)
@@ -116,8 +117,8 @@ def main_menu(screen):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if start_button.is_hovered(event.pos):
-                    # choose_level(screen)
-                    game_start(0)
+                    choose_level(screen)
+                    # game_start(0)
                 elif exit_button.is_hovered(event.pos):
                     sys.exit()
                 elif settings_button.is_hovered(event.pos):
@@ -235,7 +236,8 @@ def audio_settings(screen):
 
 def choose_level(screen):
     pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
-    bg_image = pygame.image.load(f'Resources/tiles/Tiles_from_internet/25-Choose level/choose level{len(max_ind) + 1}.png')
+    bg_image = pygame.image.load(
+        f'Resources/tiles/Tiles_from_internet/25-Choose level/choose level{len(max_ind) + 1}.png')
     screen.blit(bg_image, (0, 0))
 
     running = True
@@ -268,6 +270,7 @@ def choose_level(screen):
                     game_start(5)
 
         pygame.display.update()
+
 
 def start():
     pygame.init()
