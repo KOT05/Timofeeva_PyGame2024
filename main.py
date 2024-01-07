@@ -3,18 +3,22 @@ import ctypes
 import sys
 from level import Level
 from level_data import all_levels
-from functions import Button, rendering, SoundPlayer
-from csv_work import import_folder
+from functions import Button, rendering_of_main_menu, SoundPlayer
 
 WIDTH, HEIGHT = 1920, 1080
 SOUND_VOLUME = 0.25
 max_ind = set()
 
+# музыка в главном меню
+Music_player = SoundPlayer()
 
+
+# запуск игры
 def game_start(level_ind):
     global max_ind
     screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
     clock = pygame.time.Clock()
+    Music_player.play_music(r'resources\music\soundtrack_2.mp3', SOUND_VOLUME)
 
     # выбор уровня
     level = Level(all_levels[level_ind], screen)
@@ -96,6 +100,7 @@ def game_start(level_ind):
         clock.tick(60)
 
 
+# главное меню
 def main_menu(screen):
     pygame.display.set_mode((640, 480))
     start_button = Button('Играть', (250, 150), 150, 50, 'green', 'red', 'purple', 40)
@@ -105,7 +110,7 @@ def main_menu(screen):
     running = True
     while running:
         # отрисовка основных элементов на экране
-        rendering(screen, 'Побег', r'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
+        rendering_of_main_menu(screen, 'Побег', r'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
 
         start_button.draw(screen)
         settings_button.draw(screen)
@@ -127,6 +132,7 @@ def main_menu(screen):
         pygame.display.update()
 
 
+# меню настроек
 def settings_menu(screen):
     audio_button = Button('Звук', (250, 150), 150, 50, 'green', 'red', 'purple', 40)
     video_button = Button('Видео', (250, 210), 150, 50, 'green', 'red', 'purple', 40)
@@ -134,7 +140,7 @@ def settings_menu(screen):
 
     running = True
     while running:
-        rendering(screen, 'Настройки', r'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
+        rendering_of_main_menu(screen, 'Настройки', r'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
 
         audio_button.draw(screen)
         video_button.draw(screen)
@@ -157,6 +163,7 @@ def settings_menu(screen):
         pygame.display.update()
 
 
+# настройки видео
 def video_settings(screen):
     global WIDTH, HEIGHT
     resolution_button_1 = Button('800x600', (250, 150), 150, 50, 'green', 'red', 'purple', 40)
@@ -166,7 +173,8 @@ def video_settings(screen):
 
     running = True
     while running:
-        rendering(screen, 'Разрешение экрана', r'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
+        rendering_of_main_menu(screen, 'Разрешение экрана', r'Resources\Images\dream_TradingCard.jpg', (640, 480),
+                               (320, 100))
 
         resolution_button_1.draw(screen)
         resolution_button_2.draw(screen)
@@ -192,9 +200,8 @@ def video_settings(screen):
         pygame.display.update()
 
 
+# настройки аудио
 def audio_settings(screen):
-    global SOUND_VOLUME
-
     volume_1 = Button('100%', (250, 150), 150, 50, 'green', 'red', 'purple', 40)
     volume_2 = Button('50%', (250, 210), 150, 50, 'green', 'red', 'purple', 40)
     volume_3 = Button('25%', (250, 270), 150, 50, 'green', 'red', 'purple', 40)
@@ -203,7 +210,8 @@ def audio_settings(screen):
 
     running = True
     while running:
-        rendering(screen, 'Настройки звука', r'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
+        rendering_of_main_menu(screen, 'Настройки звука', r'Resources\Images\dream_TradingCard.jpg', (640, 480),
+                               (320, 100))
 
         volume_1.draw(screen)
         volume_2.draw(screen)
@@ -234,6 +242,7 @@ def audio_settings(screen):
         pygame.display.update()
 
 
+# меню выбора уровня
 def choose_level(screen):
     pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
     bg_image = pygame.image.load(
@@ -272,14 +281,17 @@ def choose_level(screen):
         pygame.display.update()
 
 
+# функция инициализации программы
 def start():
     pygame.init()
     ctypes.windll.user32.SetProcessDPIAware()
     screen = pygame.display.set_mode((640, 480))
+    Music_player.play_music(r'resources\music\soundtrack.mp3', SOUND_VOLUME)
     main_menu(screen)
 
 
+# музыка в главном меню
 Music_player = SoundPlayer()
-Music_player.play_music(r'resources\music\soundtrack.mp3', SOUND_VOLUME)
 
+# запуск кода
 start()

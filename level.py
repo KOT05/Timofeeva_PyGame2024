@@ -24,48 +24,48 @@ class Level:
         bricks_layout = import_csv_layout(level_data['bricks'])  # получаем матрицу с индексами плиток
         self.tile_list = import_cut_graphic('Resources/Tiles/Tiles_from_internet/14-TileSets/CastleTiles.png', 32,
                                             32)  # вырезаем все плитки из общего изображения
-        self.bricks_sprites = self.creat_tile_group(bricks_layout, 'bricks')
+        self.bricks_sprites = self.create_tile_group(bricks_layout, 'bricks')
 
         # СЛОЙ 2 настройка задней стены
         wall_layout = import_csv_layout(level_data['wall'])  # получаем матрицу с индексами плиток
-        self.wall_sprites = self.creat_tile_group(wall_layout, 'wall')
+        self.wall_sprites = self.create_tile_group(wall_layout, 'wall')
 
         # СЛОЙ 3 настройка двери
         door_layout = import_csv_layout(level_data['door'])  # получаем матрицу с индексами плиток
-        self.door_sprites = self.creat_tile_group(door_layout, 'door')
+        self.door_sprites = self.create_tile_group(door_layout, 'door')
 
         # СЛОЙ 4 настройка ключа
         key_layout = import_csv_layout(level_data['key'])  # получаем матрицу с индексами плиток
-        self.key_sprites = self.creat_tile_group(key_layout, 'key')
+        self.key_sprites = self.create_tile_group(key_layout, 'key')
 
         # СЛОЙ 5 настройка шипов
         thorn_layout = import_csv_layout(level_data['thorn'])  # получаем матрицу с индексами плиток
-        self.thorn_sprites = self.creat_tile_group(thorn_layout, 'thorn')
+        self.thorn_sprites = self.create_tile_group(thorn_layout, 'thorn')
 
         # СЛОЙ 6 настройка врага
         suriken_layout = import_csv_layout(level_data['suriken'])  # получаем матрицу с индексами плиток
-        self.suriken_sprites = self.creat_tile_group(suriken_layout, 'suriken')
-        self.suriken_stop_sprites = self.creat_tile_group(suriken_layout, 'suriken_stop')
+        self.suriken_sprites = self.create_tile_group(suriken_layout, 'suriken')
+        self.suriken_stop_sprites = self.create_tile_group(suriken_layout, 'suriken_stop')
 
         # СЛОЙ 7 настройка кнопки для паузы
         button_layout = import_csv_layout(level_data['button'])
         self.tile_list = import_cut_graphic('Resources/Tiles/Tiles_from_internet/21-Button/pause.png', 32,
                                             32)  # вырезаем все плитки из общего изображения
-        self.button_sprites = self.creat_tile_group(button_layout, 'button')
+        self.button_sprites = self.create_tile_group(button_layout, 'button')
 
         # СЛОЙ 8 настройка доп инфы
         info_layout = import_csv_layout(level_data['info'])
         self.tile_list = import_folder(
             'Resources/Tiles/Tiles_from_internet/24-info/level_number')  # все изображения из файла
-        self.info_level_sprites = self.creat_tile_group(info_layout, 'info_level')
-        self.study_sprites = self.creat_tile_group(info_layout, 'study')
+        self.info_level_sprites = self.create_tile_group(info_layout, 'info_level')
+        self.study_sprites = self.create_tile_group(info_layout, 'study')
 
         # настройка игрока
         start_stop_layout = import_csv_layout(level_data['start_stop'])
-        self.player = self.creat_tile_group(start_stop_layout, 'start')
-        self.end_sprites = self.creat_tile_group(start_stop_layout, 'stop')
+        self.player = self.create_tile_group(start_stop_layout, 'start')
+        self.end_sprites = self.create_tile_group(start_stop_layout, 'stop')
 
-    def creat_tile_group(self, layout, typee):
+    def create_tile_group(self, layout, typee):
         # нруппировка игрока отличается от других
         if typee == 'start':
             sprites_group = pygame.sprite.GroupSingle()
