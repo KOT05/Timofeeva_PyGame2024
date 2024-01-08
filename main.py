@@ -137,7 +137,7 @@ def main_menu(screen):
 def settings_menu(screen):
     audio_button = Button('Звук', (250, 150), 150, 50, 'green', 'red', 'purple', 40)
     video_button = Button('Видео', (250, 210), 150, 50, 'green', 'red', 'purple', 40)
-    exit_button = Button('Выход', (250, 270), 150, 50, 'green', 'red', 'purple', 40)
+    exit_button = Button('Назад', (250, 270), 150, 50, 'green', 'red', 'purple', 40)
 
     running = True
     while running:
@@ -170,7 +170,7 @@ def video_settings(screen):
     resolution_button_1 = Button('800x600', (250, 150), 150, 50, 'green', 'red', 'purple', 40)
     resolution_button_2 = Button('1280x720', (250, 210), 150, 50, 'green', 'red', 'purple', 40)
     resolution_button_3 = Button('1920x1080', (250, 270), 150, 50, 'green', 'red', 'purple', 40)
-    exit_button = Button('Выход', (250, 330), 150, 50, 'green', 'red', 'purple', 40)
+    exit_button = Button('Назад', (250, 330), 150, 50, 'green', 'red', 'purple', 40)
 
     running = True
     while running:
@@ -203,11 +203,12 @@ def video_settings(screen):
 
 # настройки аудио
 def audio_settings(screen):
+    global SOUND_VOLUME
     volume_1 = Button('100%', (250, 150), 150, 50, 'green', 'red', 'purple', 40)
     volume_2 = Button('50%', (250, 210), 150, 50, 'green', 'red', 'purple', 40)
     volume_3 = Button('25%', (250, 270), 150, 50, 'green', 'red', 'purple', 40)
     volume_4 = Button('on/off', (250, 330), 150, 50, 'green', 'red', 'purple', 40)
-    exit_button = Button('Выход', (250, 390), 150, 50, 'green', 'red', 'purple', 40)
+    exit_button = Button('Назад', (250, 390), 150, 50, 'green', 'red', 'purple', 40)
 
     running = True
     while running:
