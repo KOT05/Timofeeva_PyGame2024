@@ -4,7 +4,6 @@ import sys
 from level import Level
 from level_data import all_levels
 from functions import Button, rendering_of_main_menu, SoundPlayer
-import os
 
 WIDTH, HEIGHT = 1920, 1080
 SOUND_VOLUME = 0.25
@@ -40,14 +39,14 @@ def game_start(level_ind):
                     # к выбору уровня
                     elif 1168 <= mouse[0] <= 1300 and 464 <= mouse[1] <= 596:
                         level.pause = False
-                        choose_level(screen, level_ind)
+                        choose_level(screen)
                         running = False
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE or event.key == pygame.K_p:
                         level.pause = False
                     elif event.key == pygame.K_m:
                         level.pause = False
-                        choose_level(screen, level_ind)
+                        choose_level(screen)
                     elif event.key == pygame.K_r:
                         level.pause = False
                         level = Level(all_levels[level_ind], screen)
@@ -61,7 +60,7 @@ def game_start(level_ind):
                 # если нажали esc, возвращаемся к меню выбора уровня
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     running = False
-                    choose_level(screen, level_ind)
+                    choose_level(screen)
                 # если нажали r, то уровень начинается заново
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
                     level = Level(all_levels[level_ind], screen)
@@ -70,7 +69,7 @@ def game_start(level_ind):
                     level.pause = True
                 # если нажали m, то к окну выбору уровня
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_m:
-                    choose_level(screen, level_ind)
+                    choose_level(screen)
                 # проверка кнопки pause на экране
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_pos = pygame.mouse.get_pos()
@@ -245,7 +244,7 @@ def audio_settings(screen):
 
 
 # меню выбора уровня
-def choose_level(screen, pred=0):
+def choose_level(screen):
     pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
     bg_image = pygame.image.load(
         f'Resources/tiles/Tiles_from_internet/25-Choose level/choose level{len(max_ind) + 1}.png')
@@ -281,27 +280,7 @@ def choose_level(screen, pred=0):
                     game_start(5)
                 # кнопка назад
                 elif 1730 <= mouse[0] <= 1891 and 21 <= mouse[1] <= 74:
-                    game_start(pred)
-
-        pygame.display.update()
-
-
-def start_window(screen):
-    os.environ['SDL_VIDEO_CENTERED'] = '1'
-    bg_image = pygame.image.load('Resources/tiles/Tiles_from_internet/Заставка вариант1.jpg')
-    screen.blit(bg_image, (0, 0))
-
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                main_menu(screen)
+                    main_menu(screen)
 
         pygame.display.update()
 
@@ -310,9 +289,9 @@ def start_window(screen):
 def start():
     pygame.init()
     ctypes.windll.user32.SetProcessDPIAware()
-    screen = pygame.display.set_mode((736, 898))
+    screen = pygame.display.set_mode((640, 480))
     Music_player.play_music(r'resources\music\soundtrack.mp3', SOUND_VOLUME)
-    start_window(screen)
+    main_menu(screen)
 
 
 # запуск кода
