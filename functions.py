@@ -57,12 +57,14 @@ class SoundPlayer:
         pygame.mixer.music.set_volume(volume)
 
 
-def rendering_of_main_menu(screen, text, way_to_picture, picture_size, rect_center):
+def rendering(screen, way_to_picture, picture_size):
     screen.fill((0, 0, 0))
-    main_background = pygame.image.load(way_to_picture)
-    main_background = pygame.transform.scale(main_background, picture_size)
-    screen.blit(main_background, (0, 0))
+    background = pygame.image.load(way_to_picture)
+    background = pygame.transform.scale(background, picture_size)
+    screen.blit(background, (0, 0))
 
+
+def render_of_header(screen, text, rect_center):
     font = pygame.font.Font(None, 80)
     text_surface = font.render(text, True, (255, 255, 255))
     text_rect = text_surface.get_rect(center=rect_center)

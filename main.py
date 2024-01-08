@@ -3,7 +3,7 @@ import ctypes
 import sys
 from level import Level
 from level_data import all_levels
-from functions import Button, rendering_of_main_menu, SoundPlayer
+from functions import Button, rendering, render_of_header, SoundPlayer
 
 WIDTH, HEIGHT = 1920, 1080
 SOUND_VOLUME = 0.25
@@ -111,7 +111,9 @@ def main_menu(screen):
     running = True
     while running:
         # отрисовка основных элементов на экране
-        rendering_of_main_menu(screen, 'Побег', r'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
+        rendering(screen, r'Resources\Images\dream_TradingCard.jpg', (640, 480))
+        # отрисовка заголовка
+        render_of_header(screen, 'ПОБЕГ', (320, 100))
 
         start_button.draw(screen)
         settings_button.draw(screen)
@@ -141,7 +143,8 @@ def settings_menu(screen):
 
     running = True
     while running:
-        rendering_of_main_menu(screen, 'Настройки', r'Resources\Images\dream_TradingCard.jpg', (640, 480), (320, 100))
+        rendering(screen, r'Resources\Images\dream_TradingCard.jpg', (640, 480))
+        render_of_header(screen, 'Настройки', (320, 100))
 
         audio_button.draw(screen)
         video_button.draw(screen)
@@ -174,8 +177,8 @@ def video_settings(screen):
 
     running = True
     while running:
-        rendering_of_main_menu(screen, 'Разрешение экрана', r'Resources\Images\dream_TradingCard.jpg', (640, 480),
-                               (320, 100))
+        rendering(screen, r'Resources\Images\dream_TradingCard.jpg', (640, 480))
+        render_of_header(screen, 'ВИДЕО', (320, 100))
 
         resolution_button_1.draw(screen)
         resolution_button_2.draw(screen)
@@ -212,8 +215,8 @@ def audio_settings(screen):
 
     running = True
     while running:
-        rendering_of_main_menu(screen, 'Настройки звука', r'Resources\Images\dream_TradingCard.jpg', (640, 480),
-                               (320, 100))
+        rendering(screen, r'Resources\Images\dream_TradingCard.jpg', (640, 480))
+        render_of_header(screen, 'ЗВУК', (320, 100))
 
         volume_1.draw(screen)
         volume_2.draw(screen)
@@ -283,12 +286,16 @@ def choose_level(screen):
         pygame.display.update()
 
 
+# окно подсчёта результатов
+def final_window():
+    pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+
+
 # функция инициализации программы
 def start():
     pygame.init()
     ctypes.windll.user32.SetProcessDPIAware()
     screen = pygame.display.set_mode((640, 480))
-    Music_player.play_music(r'resources\music\soundtrack.mp3', SOUND_VOLUME)
     main_menu(screen)
 
 
