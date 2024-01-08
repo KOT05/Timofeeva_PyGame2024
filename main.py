@@ -4,6 +4,7 @@ import sys
 from level import Level
 from level_data import all_levels
 from functions import Button, rendering_of_main_menu, SoundPlayer
+import os
 
 WIDTH, HEIGHT = 1920, 1080
 SOUND_VOLUME = 0.25
@@ -285,13 +286,33 @@ def choose_level(screen, pred=0):
         pygame.display.update()
 
 
+def start_window(screen):
+    os.environ['SDL_VIDEO_CENTERED'] = '1'
+    bg_image = pygame.image.load('Resources/tiles/Tiles_from_internet/Заставка вариант1.jpg')
+    screen.blit(bg_image, (0, 0))
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                main_menu(screen)
+
+        pygame.display.update()
+
+
 # функция инициализации программы
 def start():
     pygame.init()
     ctypes.windll.user32.SetProcessDPIAware()
-    screen = pygame.display.set_mode((640, 480))
+    screen = pygame.display.set_mode((736, 898))
     Music_player.play_music(r'resources\music\soundtrack.mp3', SOUND_VOLUME)
-    main_menu(screen)
+    start_window(screen)
 
 
 # запуск кода
