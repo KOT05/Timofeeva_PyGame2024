@@ -37,9 +37,9 @@ class SoundPlayer:
     def __init__(self):
         pygame.mixer.init()  # Инициализация mixer'а
 
-    def play_sound(self, sound_file, volume=0.1):
+    def play_sound(self, sound_file, sound_volume):
         sound = pygame.mixer.Sound(sound_file)  # Загрузка звукового файла
-        sound.set_volume(volume)  # Установка громкости
+        sound.set_volume(sound_volume)  # Установка громкости
         sound.play()  # Проигрывание звука
 
     def play_music(self, music_file, sound_volume, repeat=True):
@@ -57,7 +57,7 @@ class SoundPlayer:
         pygame.mixer.music.set_volume(volume)
 
 
-def rendering(screen, text, way_to_picture, picture_size, rect_center):
+def rendering_of_main_menu(screen, text, way_to_picture, picture_size, rect_center):
     screen.fill((0, 0, 0))
     main_background = pygame.image.load(way_to_picture)
     main_background = pygame.transform.scale(main_background, picture_size)
