@@ -9,7 +9,7 @@ WIDTH, HEIGHT = 1920, 1080
 SOUND_VOLUME = 0.25
 max_ind = set()
 
-# музыка в главном меню
+# музыка
 Music_player = SoundPlayer()
 
 
@@ -18,7 +18,6 @@ def game_start(level_ind):
     global max_ind
     screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
     clock = pygame.time.Clock()
-    Music_player.play_music(r'resources\music\soundtrack_2.mp3', SOUND_VOLUME)
 
     # выбор уровня
     level = Level(all_levels[level_ind], screen)
@@ -41,6 +40,7 @@ def game_start(level_ind):
                     elif 1168 <= mouse[0] <= 1300 and 464 <= mouse[1] <= 596:
                         level.pause = False
                         choose_level(screen)
+                        running = False
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE or event.key == pygame.K_p:
                         level.pause = False
@@ -57,7 +57,7 @@ def game_start(level_ind):
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                # если нажали esc, возвращаемся к главному окну
+                # если нажали esc, возвращаемся к меню выбора уровня
                 elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     running = False
                     choose_level(screen)
@@ -102,6 +102,7 @@ def game_start(level_ind):
 
 # главное меню
 def main_menu(screen):
+    Music_player.play_music(r'resources\music\soundtrack.mp3', SOUND_VOLUME)
     pygame.display.set_mode((640, 480))
     start_button = Button('Играть', (250, 150), 150, 50, 'green', 'red', 'purple', 40)
     settings_button = Button('Настройки', (250, 210), 150, 50, 'green', 'red', 'purple', 40)
@@ -122,8 +123,8 @@ def main_menu(screen):
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if start_button.is_hovered(event.pos):
+                    Music_player.play_music(r'resources\music\soundtrack_2.mp3', SOUND_VOLUME)
                     choose_level(screen)
-                    # game_start(0)
                 elif exit_button.is_hovered(event.pos):
                     sys.exit()
                 elif settings_button.is_hovered(event.pos):
@@ -289,9 +290,6 @@ def start():
     Music_player.play_music(r'resources\music\soundtrack.mp3', SOUND_VOLUME)
     main_menu(screen)
 
-
-# музыка в главном меню
-Music_player = SoundPlayer()
 
 # запуск кода
 start()
