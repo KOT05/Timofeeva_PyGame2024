@@ -301,7 +301,7 @@ def choose_level(screen):
 
 
 # окно подсчёта результатов
-def final_window(screen, results):
+def final_window(screen):
     rendering(screen, r'Resources\Images\dream_TradingCard.jpg', (640, 480))
     render_of_text(screen, 'ИТОГО', (320, 100))
 
