@@ -306,7 +306,7 @@ def final_window(screen, results):
     render_of_text(screen, 'ИТОГО', (320, 100))
 
     render_of_text(screen, f'ВРЕМЕНИ В ИГРЕ ПРОВЕДЕНО: ', (205, 150), size=35)
-    render_of_text(screen, f'УРОВНЕЙ ПРОЙДЕНО: {len(max_ind)}', (150, 250), size=35)
+    render_of_text(screen, f'УРОВНЕЙ ПРОЙДЕНО: {max(max_ind)}', (150, 250), size=35)
 
     while True:
         for event in pygame.event.get():
