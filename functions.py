@@ -64,8 +64,8 @@ def rendering(screen, way_to_picture, picture_size):
     screen.blit(background, (0, 0))
 
 
-def render_of_header(screen, text, rect_center):
-    font = pygame.font.Font(None, 80)
-    text_surface = font.render(text, True, (255, 255, 255))
+def render_of_text(screen, text, rect_center, size=80, color=(105, 0, 198)):
+    font = pygame.font.Font(None, size)
+    text_surface = font.render(text, True, color)
     text_rect = text_surface.get_rect(center=rect_center)
     screen.blit(text_surface, text_rect)
