@@ -305,8 +305,8 @@ def final_window(screen, results):
     rendering(screen, r'Resources\Images\dream_TradingCard.jpg', (640, 480))
     render_of_text(screen, 'ИТОГО', (320, 100))
 
-    render_of_text(screen, f'ВРЕМЕНИ В ИГРЕ ПРОВЕДЕНО:', (200, 150), size=35)
-    render_of_text(screen, f'УРОВНЕЙ ПРОЙДЕНО:', (200, 250), size=35)
+    render_of_text(screen, f'ВРЕМЕНИ В ИГРЕ ПРОВЕДЕНО: ', (205, 150), size=35)
+    render_of_text(screen, f'УРОВНЕЙ ПРОЙДЕНО: {len(max_ind)}', (150, 250), size=35)
 
     while True:
         for event in pygame.event.get():
