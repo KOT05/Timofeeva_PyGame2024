@@ -282,6 +282,9 @@ def choose_level(screen):
                 # шестой уровень, индекс 5
                 elif 978 <= mouse[0] <= 1134 and 1545 <= mouse[1] <= 1701 and len(max_ind) >= 5:
                     game_start(5)
+                # кнопка назад
+                elif 1730 <= mouse[0] <= 1891 and 21 <= mouse[1] <= 74:
+                    main_menu(screen)
 
         pygame.display.update()
 
