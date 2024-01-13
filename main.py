@@ -1,13 +1,14 @@
 import pygame
 import ctypes
 import sys
+import os
 from level import Level
 from level_data import all_levels
 from functions import Button, rendering, render_of_text, SoundPlayer
 
 WIDTH, HEIGHT = 1920, 1080
 SOUND_VOLUME = 0.25
-max_ind = set()
+max_ind = set('0')
 
 # музыка
 Music_player = SoundPlayer()
@@ -262,7 +263,7 @@ def audio_settings(screen):
 def choose_level(screen):
     pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
     bg_image = pygame.image.load(
-        f'Resources/tiles/Tiles_from_internet/25-Choose level/choose level{len(max_ind) + 1}.png')
+        f'Resources/tiles/Tiles_from_internet/25-Choose level/choose level{len(max_ind)}.png')
     screen.blit(bg_image, (0, 0))
 
     running = True
@@ -279,19 +280,19 @@ def choose_level(screen):
                 if 114 <= mouse[0] <= 270 and 135 <= mouse[1] <= 432:
                     game_start(0)
                 # второй уровень, индекс 1
-                elif 633 <= mouse[0] <= 786 and 135 <= mouse[1] <= 432 and len(max_ind) >= 1:
+                elif 633 <= mouse[0] <= 786 and 135 <= mouse[1] <= 432 and len(max_ind) > 1:
                     game_start(1)
                 # третий уровень, индекс 2
-                elif 1500 <= mouse[0] <= 1656 and 135 <= mouse[1] <= 432 and len(max_ind) >= 2:
+                elif 1500 <= mouse[0] <= 1656 and 135 <= mouse[1] <= 432 and len(max_ind) > 2:
                     game_start(2)
                 # четвертый уровень, индекс 3
-                elif 111 <= mouse[0] <= 267 and 546 <= mouse[1] <= 846 and len(max_ind) >= 3:
+                elif 111 <= mouse[0] <= 267 and 546 <= mouse[1] <= 846 and len(max_ind) > 3:
                     game_start(3)
                 # пятый уровень, индекс 4
-                elif 975 <= mouse[0] <= 1131 and 546 <= mouse[1] <= 846 and len(max_ind) >= 4:
+                elif 975 <= mouse[0] <= 1131 and 546 <= mouse[1] <= 846 and len(max_ind) > 4:
                     game_start(4)
                 # шестой уровень, индекс 5
-                elif 978 <= mouse[0] <= 1134 and 1545 <= mouse[1] <= 1701 and len(max_ind) >= 5:
+                elif 978 <= mouse[0] <= 1134 and 1545 <= mouse[1] <= 1701 and len(max_ind) > 5:
                     game_start(5)
                 # кнопка назад
                 elif 1730 <= mouse[0] <= 1891 and 21 <= mouse[1] <= 74:
@@ -321,12 +322,32 @@ def final_window(screen):
         pygame.display.update()
 
 
+def start_window(screen):
+    os.environ['SDL_VIDEO_CENTERED'] = '1'
+    bg_image = pygame.image.load('Resources/tiles/Tiles_from_internet/Заставка 3 готовая.jpg')
+    screen.blit(bg_image, (0, 0))
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                main_menu(screen)
+
+        pygame.display.update()
+
+
 # функция инициализации программы
 def start():
     pygame.init()
     ctypes.windll.user32.SetProcessDPIAware()
-    screen = pygame.display.set_mode((640, 480))
-    main_menu(screen)
+    screen = pygame.display.set_mode((757, 950))
+    start_window(screen)
 
 
 # запуск кода
