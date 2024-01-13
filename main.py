@@ -108,7 +108,7 @@ def main_menu(screen, *results):
     pygame.display.set_mode((640, 480))
 
     if results:  # при наличии переданных результатов они отобразятся на финальном окне
-        final_window(screen, results)
+        final_window(screen)
 
     # первый санудтрек
     Music_player.play_music(r'resources\music\soundtrack.mp3', SOUND_VOLUME)

@@ -30,4 +30,14 @@ level_3 = {'door': 'Resources/Levels/3/уровень 3_дверь.csv',
            'button': 'Resources/Levels/3/уровень 3_restart.csv',
            'info': 'Resources/Levels/3/уровень 3_info.csv'}
 
-all_levels = [level_1, level_2, level_3, level_1, level_2, level_3]
+level_4 = {'door': 'Resources/Levels/4/уровень 4_дверь.csv',
+           'bricks': 'Resources/Levels/4/уровень 4_кирпичи.csv',
+           'start_stop': 'Resources/Levels/4/уровень 4_старт_стоп.csv',
+           'key': 'Resources/Levels/4/уровень 4_ключ.csv',
+           'wall': 'Resources/Levels/4/уровень 4_стена.csv',
+           'suriken': 'Resources/Levels/4/уровень 4_вертушка.csv',
+           'thorn': 'Resources/Levels/4/уровень 4_шипы.csv',
+           'button': 'Resources/Levels/4/уровень 4_restart.csv',
+           'info': 'Resources/Levels/4/уровень 4_info.csv'}
+
+all_levels = [level_1, level_2, level_3, level_4, level_1, level_2]
