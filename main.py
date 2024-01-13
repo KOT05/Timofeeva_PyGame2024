@@ -4,7 +4,7 @@ import sys
 import os
 from level import Level
 from level_data import all_levels
-from functions import Button, rendering, render_of_text, SoundPlayer
+from functions import *
 
 WIDTH, HEIGHT = 1920, 1080
 SOUND_VOLUME = 0.25
@@ -13,8 +13,7 @@ max_ind = set('0')
 # музыка
 Music_player = SoundPlayer()
 
-# данные статистики
-stat = []
+STOPWATCH = Stopwatch()
 
 
 # запуск игры
@@ -105,7 +104,7 @@ def game_start(level_ind):
 
 
 # главное меню
-def main_menu(screen, *results):
+def main_menu(screen, results=False):
     pygame.display.set_mode((640, 480))
 
     if results:  # при наличии переданных результатов они отобразятся на финальном окне
@@ -273,7 +272,7 @@ def choose_level(screen):
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                main_menu(screen, stat)
+                main_menu(screen, True)
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse = pygame.mouse.get_pos()
                 # первый уровень, индекс 0
@@ -296,7 +295,7 @@ def choose_level(screen):
                     game_start(5)
                 # кнопка назад
                 elif 1730 <= mouse[0] <= 1891 and 21 <= mouse[1] <= 74:
-                    main_menu(screen, stat)
+                    main_menu(screen, True)
 
         pygame.display.update()
 
