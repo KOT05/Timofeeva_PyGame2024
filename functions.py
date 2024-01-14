@@ -1,5 +1,5 @@
 import pygame
-from time import time, sleep
+from time import time
 
 
 # класс кнопки
