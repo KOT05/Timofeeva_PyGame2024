@@ -6,14 +6,11 @@ from level_data import all_levels
 from functions import *
 
 WIDTH, HEIGHT = 1920, 1080
-SOUND_VOLUME = 0.25
+SOUND_VOLUME = 0.05
 max_ind = set('0')
 
 # музыка
 Music_player = SoundPlayer()
-
-# данные статистики
-stat = []
 
 
 # запуск игры
@@ -104,14 +101,15 @@ def game_start(level_ind):
 
 
 # главное меню
-def main_menu(screen, *results):
+def main_menu(screen, show_results=False, replay_music=False):
     pygame.display.set_mode((640, 480))
 
-    if results:  # при наличии переданных результатов они отобразятся на финальном окне
+    if show_results:  # при наличии аргумента результаты отобразятся на финальном окне
         final_window(screen)
 
-    # первый санудтрек
-    Music_player.play_music(r'Resources\music\soundtrack.mp3', SOUND_VOLUME)
+    if replay_music:
+        # первый санудтрек
+        Music_player.play_music(r'Resources\music\soundtrack.mp3', SOUND_VOLUME)
 
     # объекты-кнопки
     start_button = Button('ИГРАТЬ', (250, 150), 150, 50, 'gray', 'red', 'purple', 30)
@@ -244,11 +242,11 @@ def audio_settings(screen):
                     running = False
                 else:
                     if volume_1.is_hovered(event.pos):
-                        SOUND_VOLUME = 1
+                        SOUND_VOLUME = 0.1
                     elif volume_2.is_hovered(event.pos):
-                        SOUND_VOLUME = 0.5
+                        SOUND_VOLUME = 0.05
                     elif volume_3.is_hovered(event.pos):
-                        SOUND_VOLUME = 0.25
+                        SOUND_VOLUME = 0.025
                     elif volume_4.is_hovered(event.pos):
                         SOUND_VOLUME = 0
                     Music_player.set_volume(SOUND_VOLUME)
@@ -272,7 +270,7 @@ def choose_level(screen):
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                main_menu(screen, stat)
+                main_menu(screen, show_results=True, replay_music=True)
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse = pygame.mouse.get_pos()
                 # первый уровень, индекс 0
@@ -295,7 +293,7 @@ def choose_level(screen):
                     game_start(5)
                 # кнопка назад
                 elif 1730 <= mouse[0] <= 1891 and 21 <= mouse[1] <= 74:
-                    main_menu(screen, stat)
+                    main_menu(screen, show_results=True, replay_music=True)
 
         pygame.display.update()
 
@@ -323,6 +321,9 @@ def final_window(screen):
 
 
 def start_window(screen):
+    # первый санудтрек
+    Music_player.play_music(r'Resources\music\soundtrack.mp3', SOUND_VOLUME)
+
     os.environ['SDL_VIDEO_CENTERED'] = '1'
     bg_image = pygame.image.load('Resources/tiles/Tiles_from_internet/Заставка 3 готовая.jpg')
     screen.blit(bg_image, (0, 0))
@@ -337,7 +338,7 @@ def start_window(screen):
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                main_menu(screen)
+                main_menu(screen, show_results=False, replay_music=False)
 
         pygame.display.update()
 
