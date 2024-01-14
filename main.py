@@ -1,10 +1,9 @@
-import pygame
 import ctypes
 import sys
 import os
 from level import Level
 from level_data import all_levels
-from functions import Button, rendering, render_of_text, SoundPlayer
+from functions import *
 
 WIDTH, HEIGHT = 1920, 1080
 SOUND_VOLUME = 0.25
@@ -112,17 +111,17 @@ def main_menu(screen, *results):
         final_window(screen)
 
     # первый санудтрек
-    Music_player.play_music(r'resources\music\soundtrack.mp3', SOUND_VOLUME)
+    Music_player.play_music(r'Resources\music\soundtrack.mp3', SOUND_VOLUME)
 
     # объекты-кнопки
-    start_button = Button('ИГРАТЬ', (250, 150), 150, 50, 'green', 'red', 'purple', 30)
-    settings_button = Button('НАСТРОЙКИ', (250, 210), 150, 50, 'green', 'red', 'purple', 30)
+    start_button = Button('ИГРАТЬ', (250, 150), 150, 50, 'gray', 'red', 'purple', 30)
+    settings_button = Button('НАСТРОЙКИ', (250, 210), 150, 50, 'black', 'red', 'purple', 30)
     exit_button = Button('ВЫХОД', (250, 270), 150, 50, 'green', 'red', 'purple', 30)
 
     running = True
     while running:
         # отрисовка основных элементов на экране
-        rendering(screen, r'Resources\Images\dream_TradingCard.jpg', (640, 480))
+        rendering(screen, r'Resources\Images\dream_TradingCard(2).jpg', (640, 480))
         # отрисовка заголовка
         render_of_text(screen, 'ПОБЕГ', (320, 100))
 
@@ -149,13 +148,13 @@ def main_menu(screen, *results):
 
 # меню настроек
 def settings_menu(screen):
-    audio_button = Button('ЗВУК', (250, 150), 150, 50, 'green', 'red', 'purple', 30)
-    video_button = Button('ВИДЕО', (250, 210), 150, 50, 'green', 'red', 'purple', 30)
+    audio_button = Button('ЗВУК', (250, 150), 150, 50, 'gray', 'red', 'purple', 30)
+    video_button = Button('ВИДЕО', (250, 210), 150, 50, 'black', 'red', 'purple', 30)
     exit_button = Button('НАЗАД', (250, 270), 150, 50, 'green', 'red', 'purple', 30)
 
     running = True
     while running:
-        rendering(screen, r'Resources\Images\dream_TradingCard.jpg', (640, 480))
+        rendering(screen, r'Resources\Images\dream_TradingCard(2).jpg', (640, 480))
         render_of_text(screen, 'Настройки', (320, 100))
 
         audio_button.draw(screen)
@@ -182,14 +181,14 @@ def settings_menu(screen):
 # настройки видео
 def video_settings(screen):
     global WIDTH, HEIGHT
-    resolution_button_1 = Button('800x600', (250, 150), 150, 50, 'green', 'red', 'purple', 30)
-    resolution_button_2 = Button('1280x720', (250, 210), 150, 50, 'green', 'red', 'purple', 30)
-    resolution_button_3 = Button('1920x1080', (250, 270), 150, 50, 'green', 'red', 'purple', 30)
+    resolution_button_1 = Button('800x600', (250, 150), 150, 50, 'gray', 'red', 'purple', 30)
+    resolution_button_2 = Button('1280x720', (250, 210), 150, 50, 'black', 'red', 'purple', 30)
+    resolution_button_3 = Button('1920x1080', (250, 270), 150, 50, 'brown', 'red', 'purple', 30)
     exit_button = Button('НАЗАД', (250, 330), 150, 50, 'green', 'red', 'purple', 30)
 
     running = True
     while running:
-        rendering(screen, r'Resources\Images\dream_TradingCard.jpg', (640, 480))
+        rendering(screen, r'Resources\Images\dream_TradingCard(2).jpg', (640, 480))
         render_of_text(screen, 'ВИДЕО', (320, 100))
 
         resolution_button_1.draw(screen)
@@ -219,15 +218,15 @@ def video_settings(screen):
 # настройки аудио
 def audio_settings(screen):
     global SOUND_VOLUME
-    volume_1 = Button('100%', (250, 150), 150, 50, 'green', 'red', 'purple', 30)
-    volume_2 = Button('50%', (250, 210), 150, 50, 'green', 'red', 'purple', 30)
-    volume_3 = Button('25%', (250, 270), 150, 50, 'green', 'red', 'purple', 30)
-    volume_4 = Button('ON/OFF', (250, 330), 150, 50, 'green', 'red', 'purple', 30)
+    volume_1 = Button('100%', (250, 150), 150, 50, 'gray', 'red', 'purple', 30)
+    volume_2 = Button('50%', (250, 210), 150, 50, 'black', 'red', 'purple', 30)
+    volume_3 = Button('25%', (250, 270), 150, 50, 'brown', 'red', 'purple', 30)
+    volume_4 = Button('ON/OFF', (250, 330), 150, 50, 'pink', 'red', 'purple', 30)
     exit_button = Button('НАЗАД', (250, 390), 150, 50, 'green', 'red', 'purple', 30)
 
     running = True
     while running:
-        rendering(screen, r'Resources\Images\dream_TradingCard.jpg', (640, 480))
+        rendering(screen, r'Resources\Images\dream_TradingCard(2).jpg', (640, 480))
         render_of_text(screen, 'ЗВУК', (320, 100))
 
         volume_1.draw(screen)
@@ -303,18 +302,19 @@ def choose_level(screen):
 
 # окно подсчёта результатов
 def final_window(screen):
-    rendering(screen, r'Resources\Images\dream_TradingCard.jpg', (640, 480))
-    render_of_text(screen, 'ИТОГО', (320, 100))
+    rendering(screen, r'Resources\Images\dream_TradingCard(2).jpg', (640, 480))
+    render_of_text(screen, 'ИТОГО', (320, 50))
 
     render_of_text(screen, f'ВРЕМЕНИ В ИГРЕ ПРОВЕДЕНО: ', (205, 150), size=35)
     render_of_text(screen, f'УРОВНЕЙ ПРОЙДЕНО: {max(max_ind)}', (150, 250), size=35)
+    render_of_text(screen, f'Кликни, чтобы вернуться в меню', (320, 450), size=25)
 
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+            elif event.type == pygame.KEYDOWN:
                 return
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 return
