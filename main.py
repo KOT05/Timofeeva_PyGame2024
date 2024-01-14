@@ -8,9 +8,8 @@ from functions import *
 WIDTH, HEIGHT = 1920, 1080
 SOUND_VOLUME = 0.05
 max_ind = set('0')
-
-# музыка
 Music_player = SoundPlayer()
+stopwatch = Stopwatch()
 
 
 # запуск игры
@@ -112,9 +111,9 @@ def main_menu(screen, show_results=False, replay_music=False):
         Music_player.play_music(r'Resources\music\soundtrack.mp3', SOUND_VOLUME)
 
     # объекты-кнопки
-    start_button = Button('ИГРАТЬ', (250, 150), 150, 50, 'gray', 'red', 'purple', 30)
-    settings_button = Button('НАСТРОЙКИ', (250, 210), 150, 50, 'black', 'red', 'purple', 30)
-    exit_button = Button('ВЫХОД', (250, 270), 150, 50, 'green', 'red', 'purple', 30)
+    start_button = Button('ИГРАТЬ', (250, 150), 150, 50, 'gray', 'red', 'yellow', 30)
+    settings_button = Button('НАСТРОЙКИ', (250, 210), 150, 50, 'black', 'red', 'yellow', 30)
+    exit_button = Button('ВЫХОД', (250, 270), 150, 50, 'green', 'red', 'yellow', 30)
 
     running = True
     while running:
@@ -135,6 +134,7 @@ def main_menu(screen, show_results=False, replay_music=False):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if start_button.is_hovered(event.pos):
                     Music_player.play_music(r'resources\music\soundtrack_2.mp3', SOUND_VOLUME)
+                    stopwatch.start()
                     choose_level(screen)
                 elif exit_button.is_hovered(event.pos):
                     sys.exit()
@@ -146,9 +146,9 @@ def main_menu(screen, show_results=False, replay_music=False):
 
 # меню настроек
 def settings_menu(screen):
-    audio_button = Button('ЗВУК', (250, 150), 150, 50, 'gray', 'red', 'purple', 30)
-    video_button = Button('ВИДЕО', (250, 210), 150, 50, 'black', 'red', 'purple', 30)
-    exit_button = Button('НАЗАД', (250, 270), 150, 50, 'green', 'red', 'purple', 30)
+    audio_button = Button('ЗВУК', (250, 150), 150, 50, 'gray', 'red', 'yellow', 30)
+    video_button = Button('ВИДЕО', (250, 210), 150, 50, 'black', 'red', 'yellow', 30)
+    exit_button = Button('НАЗАД', (250, 270), 150, 50, 'green', 'red', 'yellow', 30)
 
     running = True
     while running:
@@ -179,10 +179,10 @@ def settings_menu(screen):
 # настройки видео
 def video_settings(screen):
     global WIDTH, HEIGHT
-    resolution_button_1 = Button('800x600', (250, 150), 150, 50, 'gray', 'red', 'purple', 30)
-    resolution_button_2 = Button('1280x720', (250, 210), 150, 50, 'black', 'red', 'purple', 30)
-    resolution_button_3 = Button('1920x1080', (250, 270), 150, 50, 'brown', 'red', 'purple', 30)
-    exit_button = Button('НАЗАД', (250, 330), 150, 50, 'green', 'red', 'purple', 30)
+    resolution_button_1 = Button('800x600', (250, 150), 150, 50, 'gray', 'red', 'yellow', 30)
+    resolution_button_2 = Button('1280x720', (250, 210), 150, 50, 'black', 'red', 'yellow', 30)
+    resolution_button_3 = Button('1920x1080', (250, 270), 150, 50, 'brown', 'red', 'yellow', 30)
+    exit_button = Button('НАЗАД', (250, 330), 150, 50, 'green', 'red', 'yellow', 30)
 
     running = True
     while running:
@@ -216,11 +216,11 @@ def video_settings(screen):
 # настройки аудио
 def audio_settings(screen):
     global SOUND_VOLUME
-    volume_1 = Button('100%', (250, 150), 150, 50, 'gray', 'red', 'purple', 30)
-    volume_2 = Button('50%', (250, 210), 150, 50, 'black', 'red', 'purple', 30)
-    volume_3 = Button('25%', (250, 270), 150, 50, 'brown', 'red', 'purple', 30)
-    volume_4 = Button('ON/OFF', (250, 330), 150, 50, 'pink', 'red', 'purple', 30)
-    exit_button = Button('НАЗАД', (250, 390), 150, 50, 'green', 'red', 'purple', 30)
+    volume_1 = Button('100%', (250, 150), 150, 50, 'gray', 'red', 'yellow', 30)
+    volume_2 = Button('50%', (250, 210), 150, 50, 'black', 'red', 'yellow', 30)
+    volume_3 = Button('25%', (250, 270), 150, 50, 'brown', 'red', 'yellow', 30)
+    volume_4 = Button('ON/OFF', (250, 330), 150, 50, 'pink', 'red', 'yellow', 30)
+    exit_button = Button('НАЗАД', (250, 390), 150, 50, 'green', 'red', 'yellow', 30)
 
     running = True
     while running:
@@ -300,11 +300,20 @@ def choose_level(screen):
 
 # окно подсчёта результатов
 def final_window(screen):
+    stopwatch.stop()
+    result_time = round(stopwatch.elapsed_time())
+    stopwatch.reset()
+    hours, minutes, seconds = result_time // 60 // 60, result_time // 60, result_time
+
     rendering(screen, r'Resources\Images\dream_TradingCard(2).jpg', (640, 480))
     render_of_text(screen, 'ИТОГО', (320, 50))
 
-    render_of_text(screen, f'ВРЕМЕНИ В ИГРЕ ПРОВЕДЕНО: ', (205, 150), size=35)
-    render_of_text(screen, f'УРОВНЕЙ ПРОЙДЕНО: {max(max_ind)}', (150, 250), size=35)
+    render_of_text(screen, f'УРОВНЕЙ ПРОЙДЕНО:', (160, 150), size=35)
+    render_of_text(screen, f'{max(max_ind)}', (30, 200), size=35, color='yellow')
+    render_of_text(screen, f'ВРЕМЕНИ В ИГРЕ ПРОВЕДЕНО:', (215, 250), size=35)
+    render_of_text(screen,
+                   f'{hours} часов {minutes} минут {seconds} секунд',
+                   (175, 300), size=35, color='yellow')
     render_of_text(screen, f'Кликни, чтобы вернуться в меню', (320, 450), size=25)
 
     while True:

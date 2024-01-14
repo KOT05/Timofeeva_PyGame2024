@@ -1,5 +1,5 @@
 import pygame
-from time import time
+from time import time, sleep
 
 
 # класс кнопки
@@ -65,7 +65,7 @@ def rendering(screen, way_to_picture, picture_size):
     screen.blit(background, (0, 0))
 
 
-def render_of_text(screen, text, rect_center, size=80, color=(105, 0, 198)):
+def render_of_text(screen, text, rect_center, size=80, color='gray'):
     font = pygame.font.Font(None, size)
     text_surface = font.render(text, True, color)
     text_rect = text_surface.get_rect(center=rect_center)
@@ -86,3 +86,6 @@ class Stopwatch:
 
     def elapsed_time(self):
         return self.end_time - self.start_time
+
+    def reset(self):
+        self.__init__()
