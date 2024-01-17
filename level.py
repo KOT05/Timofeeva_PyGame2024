@@ -1,6 +1,6 @@
 import pygame
 from csv_work import import_csv_layout, import_cut_graphic, import_folder
-from enemy import Suriken
+from enemy import Suriken, Jumping_enemy
 from player import Player
 from tile import Tile, StaticTile, Door, AnimatedTile
 from functions import SoundPlayer
@@ -42,10 +42,15 @@ class Level:
         thorn_layout = import_csv_layout(level_data['thorn'])  # получаем матрицу с индексами плиток
         self.thorn_sprites = self.create_tile_group(thorn_layout, 'thorn')
 
-        # СЛОЙ 6 настройка врага
+        # СЛОЙ 6 настройка вертушки
         suriken_layout = import_csv_layout(level_data['suriken'])  # получаем матрицу с индексами плиток
         self.suriken_sprites = self.create_tile_group(suriken_layout, 'suriken')
         self.suriken_stop_sprites = self.create_tile_group(suriken_layout, 'suriken_stop')
+
+        # СЛОЙ 6 настройка врага
+        jumping_enemy_layout = import_csv_layout(level_data['enemy'])  # получаем матрицу с индексами плиток
+        self.jumping_enemy_sprites = self.create_tile_group(jumping_enemy_layout, 'jumping_enemy')
+        self.jumping_enemy_stop_sprites = self.create_tile_group(jumping_enemy_layout, 'jumping_enemy_stop')
 
         # СЛОЙ 7 настройка кнопки для паузы
         button_layout = import_csv_layout(level_data['button'])
@@ -102,6 +107,16 @@ class Level:
                         sprite = Suriken(x, y)
                         sprites_group.add(sprite)
 
+                    elif typee == 'jumping_enemy' and col == '0':  # сам враг
+                        # создаем объект класса враг
+                        sprite = Jumping_enemy(x, y)
+                        sprites_group.add(sprite)
+
+                    elif typee == 'jumping_enemy_stop' and col == '2':  # сам враг
+                        # создаем объект, нам не так важен класс, главное - его расположение
+                        sprite = Tile(32, 32, x, y)
+                        sprites_group.add(sprite)
+
                     elif typee == 'suriken_stop' and col == '2':  # ограничители для врагов
                         # создаем объект, нам не так важен класс, главное - его расположение
                         sprite = Tile(32, 32, x, y)
@@ -129,9 +144,12 @@ class Level:
                         sprite = StaticTile(32, 32, x, y, tile_surface)
                         sprites_group.add(sprite)
 
-                    elif typee == 'info_level' and col in ['0', '1', '2']:
+                    elif typee == 'info_level' and col in ['0', '1', '2', '5', '6', '7']:
                         # создаем статичный объект
-                        tile_surface = self.tile_list[int(col)]
+                        if int(col) < 3:
+                            tile_surface = self.tile_list[int(col)]
+                        else:
+                            tile_surface = self.tile_list[int(col) - 2]
                         sprite = StaticTile(192, 64, x, y, tile_surface)
                         sprites_group.add(sprite)
 
@@ -149,7 +167,13 @@ class Level:
             if pygame.sprite.spritecollide(suriken, self.suriken_stop_sprites, False):
                 suriken.reverse()
 
-    # столкновение с шипами
+    # разворот врага при встрече ограничителя
+    def jumping_enemy_reverse(self):
+        for enemy in self.jumping_enemy_sprites.sprites():
+            if pygame.sprite.spritecollide(enemy, self.jumping_enemy_stop_sprites, False):
+                enemy.reverse()
+
+    # столкновение с вертушкой
     def suriken_fail(self):
         player = self.player.sprite
         player_mask = pygame.mask.from_surface(player.image)
@@ -161,6 +185,20 @@ class Level:
 
             if player_mask.overlap(suriken_mask,
                                    (abs(player_cord[0] - suriken_cord[0]), abs(player_cord[1] - suriken_cord[1]))):
+                player.dead_animation = [True, self]
+
+    # столкновение с врагом
+    def jumping_enemy_fail(self):
+        player = self.player.sprite
+        player_mask = pygame.mask.from_surface(player.image)
+        player_cord = [player.rect.x, player.rect.y]
+
+        for enemy in self.jumping_enemy_sprites.sprites():
+            enemy_mask = pygame.mask.from_surface(enemy.image)
+            enemy_cord = [enemy.rect.x, enemy.rect.y]
+
+            if player_mask.overlap(enemy_mask,
+                                   (abs(player_cord[0] - enemy_cord[0]), abs(player_cord[1] - enemy_cord[1]))):
                 player.dead_animation = [True, self]
 
     # взятие ключа
@@ -256,6 +294,11 @@ class Level:
         # кирпичи
         self.bricks_sprites.draw(self.display_surface)
 
+        # враг прыгающий
+        self.jumping_enemy_sprites.draw(self.display_surface)
+        self.jumping_enemy_fail()
+        self.jumping_enemy_reverse()  # не надо ли развернуться
+
         # ключ
         self.key_sprites.draw(self.display_surface)
         self.key_getting()  # проверяем, не взяли ли ключ
@@ -284,6 +327,7 @@ class Level:
         if not self.pause:
             self.door_sprites.update()
             self.suriken_sprites.update()
+            self.jumping_enemy_sprites.update()
             self.key_sprites.update()
             portal.update()
             self.study_sprites.update()

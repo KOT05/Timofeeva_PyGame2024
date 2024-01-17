@@ -7,7 +7,7 @@ from functions import *
 
 WIDTH, HEIGHT = 1920, 1080
 SOUND_VOLUME = 0.05
-max_ind = set('0')
+max_ind = {'0'}
 Music_player = SoundPlayer()
 stopwatch = Stopwatch()
 
@@ -289,7 +289,7 @@ def choose_level(screen):
                 elif 975 <= mouse[0] <= 1131 and 546 <= mouse[1] <= 846 and len(max_ind) > 4:
                     game_start(4)
                 # шестой уровень, индекс 5
-                elif 978 <= mouse[0] <= 1134 and 1545 <= mouse[1] <= 1701 and len(max_ind) > 5:
+                elif 1548 <= mouse[0] <= 1710 and 543 <= mouse[1] <= 847 and len(max_ind) > 5:
                     game_start(5)
                 # кнопка назад
                 elif 1730 <= mouse[0] <= 1891 and 21 <= mouse[1] <= 74:
@@ -309,7 +309,7 @@ def final_window(screen):
     render_of_text(screen, 'ИТОГО', (320, 50))
 
     render_of_text(screen, f'УРОВНЕЙ ПРОЙДЕНО:', (160, 150), size=35)
-    render_of_text(screen, f'{max(max_ind)}', (30, 200), size=35, color='yellow')
+    render_of_text(screen, f'{len(max_ind)}', (30, 200), size=35, color='yellow')
     render_of_text(screen, f'ВРЕМЕНИ В ИГРЕ ПРОВЕДЕНО:', (215, 250), size=35)
     render_of_text(screen,
                    f'{hours} часов {minutes} минут {seconds} секунд',
