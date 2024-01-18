@@ -329,6 +329,7 @@ def final_window(screen):
         pygame.display.update()
 
 
+# заставка
 def start_window(screen):
     # первый санудтрек
     Music_player.play_music(r'Resources\music\soundtrack.mp3', SOUND_VOLUME)

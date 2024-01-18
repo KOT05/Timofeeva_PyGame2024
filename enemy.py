@@ -1,9 +1,8 @@
 from csv_work import import_folder
 import pygame
-from random import randint
 
 
-class Suriken(pygame.sprite.Sprite):
+class Shuriken(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
 
@@ -43,7 +42,7 @@ class Suriken(pygame.sprite.Sprite):
         self.speed *= -1
 
 
-class Jumping_enemy(pygame.sprite.Sprite):
+class JumpingEnemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
 

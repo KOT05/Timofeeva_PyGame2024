@@ -1,6 +1,6 @@
 import pygame
 from csv_work import import_csv_layout, import_cut_graphic, import_folder
-from enemy import Suriken, Jumping_enemy
+from enemy import Shuriken, JumpingEnemy
 from player import Player
 from tile import Tile, StaticTile, Door, AnimatedTile
 from functions import SoundPlayer
@@ -104,12 +104,12 @@ class Level:
 
                     elif typee == 'suriken' and col == '0':  # сам враг
                         # создаем объект класса враг
-                        sprite = Suriken(x, y)
+                        sprite = Shuriken(x, y)
                         sprites_group.add(sprite)
 
                     elif typee == 'jumping_enemy' and col == '0':  # сам враг
                         # создаем объект класса враг
-                        sprite = Jumping_enemy(x, y)
+                        sprite = JumpingEnemy(x, y)
                         sprites_group.add(sprite)
 
                     elif typee == 'jumping_enemy_stop' and col == '2':  # сам враг

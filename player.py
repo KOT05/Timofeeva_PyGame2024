@@ -2,6 +2,7 @@ import pygame
 from tile import AnimatedTile
 from csv_work import import_cut_graphic
 
+
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
@@ -88,7 +89,7 @@ class Player(pygame.sprite.Sprite):
 
     # прыгаем
     def jump(self):
-        if self.on_ground: # прыгать можем только с кирпичей
+        if self.on_ground:  # прыгать можем только с кирпичей
             self.direction.y = self.jump_speed
             self.on_ground = False
 
