@@ -89,3 +89,17 @@ class Stopwatch:
 
     def reset(self):
         self.__init__()
+
+
+def transform_time(seconds):
+    hours, minutes, seconds = 0, 0, seconds
+
+    while seconds >= 60 or minutes >= 60:
+        if seconds >= 60:
+            minutes += 1
+            seconds -= 60
+        if minutes >= 60:
+            hours += 1
+            minutes -= 60
+
+    return hours, minutes, seconds

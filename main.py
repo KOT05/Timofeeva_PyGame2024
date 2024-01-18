@@ -303,7 +303,7 @@ def final_window(screen):
     stopwatch.stop()
     result_time = round(stopwatch.elapsed_time())
     stopwatch.reset()
-    hours, minutes, seconds = result_time // 60 // 60, result_time // 60, result_time
+    hours, minutes, seconds = transform_time(result_time)
 
     rendering(screen, r'Resources\Images\dream_TradingCard(2).jpg', (640, 480))
     render_of_text(screen, 'ИТОГО', (320, 50))
