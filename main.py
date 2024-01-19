@@ -103,10 +103,8 @@ def game_start(level_ind):
 
 
 # главное меню
-def main_menu(show_results=False, replay_music=False):
-    screen = pygame.display.set_mode((757, 950))
-    bg_image = pygame.image.load('Resources/tiles/Tiles_from_internet/Заставка 3-4.jpg')
-    screen.blit(bg_image, (0, 0))
+def main_menu(screen, show_results=False, replay_music=False):
+    pygame.display.set_mode((640, 480))
 
     if show_results:  # при наличии аргумента результаты отобразятся на финальном окне
         final_window()
@@ -115,61 +113,68 @@ def main_menu(show_results=False, replay_music=False):
         # первый санудтрек
         Music_player.play_music(r'Resources\music\soundtrack.mp3', SOUND_VOLUME)
 
-    while True:
+    # объекты-кнопки
+    start_button = Button('ИГРАТЬ', (250, 150), 150, 50, 'gray', 'red', 'yellow', 30)
+    settings_button = Button('НАСТРОЙКИ', (250, 210), 150, 50, 'black', 'red', 'yellow', 30)
+    exit_button = Button('ВЫХОД', (250, 270), 150, 50, 'green', 'red', 'yellow', 30)
+
+    running = True
+    while running:
+        # отрисовка основных элементов на экране
+        rendering(screen, r'Resources\Images\dream_TradingCard(2).jpg', (640, 480))
+        # отрисовка заголовка
+        render_of_text(screen, 'ПОБЕГ', (320, 100))
+
+        # отрисовка кнопок
+        start_button.draw(screen)
+        settings_button.draw(screen)
+        exit_button.draw(screen)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                 pygame.quit()
                 sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                mouse = pygame.mouse.get_pos()
-                # играть
-                if 246 <= mouse[0] <= 486 and 358 <= mouse[1] <= 422:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if start_button.is_hovered(event.pos):
                     Music_player.play_music(r'resources\music\soundtrack_2.mp3', SOUND_VOLUME)
                     stopwatch.start()
                     choose_level(screen)
-                    break
-                # обучение
-                elif 204 <= mouse[0] <= 531 and 451 <= mouse[1] <= 525:
-                    learning()
-                    break
-                # настройки
-                elif 190 <= mouse[0] <= 557 and 557 <= mouse[1] <= 626:
-                    settings_menu(screen)
-                    break
-                # выход
-                elif 261 <= mouse[0] <= 484 and 659 <= mouse[1] <= 735:
+                elif exit_button.is_hovered(event.pos):
                     sys.exit()
+                elif settings_button.is_hovered(event.pos):
+                    settings_menu(screen)
 
         pygame.display.update()
 
 
 # меню настроек
 def settings_menu(screen):
-    bg_image = pygame.image.load('Resources/tiles/Tiles_from_internet/Настройки.jpg')
-    screen.blit(bg_image, (0, 0))
+    audio_button = Button('ЗВУК', (250, 150), 150, 50, 'gray', 'red', 'yellow', 30)
+    video_button = Button('ВИДЕО', (250, 210), 150, 50, 'black', 'red', 'yellow', 30)
+    exit_button = Button('НАЗАД', (250, 270), 150, 50, 'green', 'red', 'yellow', 30)
 
-    while True:
+    running = True
+    while running:
+        rendering(screen, r'Resources\Images\dream_TradingCard(2).jpg', (640, 480))
+        render_of_text(screen, 'Настройки', (320, 100))
+
+        audio_button.draw(screen)
+        video_button.draw(screen)
+        exit_button.draw(screen)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse = pygame.mouse.get_pos()
-                # звук
-                if 242 <= mouse[0] <= 497 and 387 <= mouse[1] <= 481:
+                if audio_button.is_hovered(event.pos):
                     audio_settings(screen)
-                    break
-                # видео
-                elif 232 <= mouse[0] <= 517 and 503 <= mouse[1] <= 608:
+                elif video_button.is_hovered(event.pos):
                     video_settings(screen)
-                    break
-                # назад
-                elif 237 <= mouse[0] <= 645 and 504 <= mouse[1] <= 729:
-                    main_menu(show_results=False, replay_music=True)
-                    break
+                elif exit_button.is_hovered(event.pos):
+                    running = False
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                main_menu(show_results=False, replay_music=True)
-                break
+                running = False
 
         pygame.display.update()
 
@@ -177,38 +182,36 @@ def settings_menu(screen):
 # настройки видео
 def video_settings(screen):
     global WIDTH, HEIGHT
-    bg_image = pygame.image.load('Resources/tiles/Tiles_from_internet/Настройки видео.jpg')
-    screen.blit(bg_image, (0, 0))
+    resolution_button_1 = Button('800x600', (250, 150), 150, 50, 'gray', 'red', 'yellow', 30)
+    resolution_button_2 = Button('1280x720', (250, 210), 150, 50, 'black', 'red', 'yellow', 30)
+    resolution_button_3 = Button('1920x1080', (250, 270), 150, 50, 'brown', 'red', 'yellow', 30)
+    exit_button = Button('НАЗАД', (250, 330), 150, 50, 'green', 'red', 'yellow', 30)
 
-    while True:
+    running = True
+    while running:
+        rendering(screen, r'Resources\Images\dream_TradingCard(2).jpg', (640, 480))
+        render_of_text(screen, 'ВИДЕО', (320, 100))
+
+        resolution_button_1.draw(screen)
+        resolution_button_2.draw(screen)
+        resolution_button_3.draw(screen)
+        exit_button.draw(screen)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse = pygame.mouse.get_pos()
-                # 800x600
-                if 186 <= mouse[0] <= 544 and 384 <= mouse[1] <= 474:
+                if exit_button.is_hovered(event.pos):
+                    running = False
+                elif resolution_button_1.is_hovered(event.pos):
                     WIDTH, HEIGHT = 800, 600
-                    settings_menu(screen)
-                    break
-                # 1280x720
-                elif 164 <= mouse[0] <= 524 and 530 <= mouse[1] <= 615:
+                elif resolution_button_2.is_hovered(event.pos):
                     WIDTH, HEIGHT = 1280, 720
-                    settings_menu(screen)
-                    break
-                # 1920x1080
-                elif 147 <= mouse[0] <= 664 and 593 <= mouse[1] <= 754:
+                elif resolution_button_3.is_hovered(event.pos):
                     WIDTH, HEIGHT = 1920, 1080
-                    settings_menu(screen)
-                    break
-                # выход
-                elif 242 <= mouse[0] <= 791 and 508 <= mouse[1] <= 881:
-                    settings_menu(screen)
-                    break
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                settings_menu(screen)
-                break
+                running = False
 
         pygame.display.update()
 
@@ -216,42 +219,42 @@ def video_settings(screen):
 # настройки аудио
 def audio_settings(screen):
     global SOUND_VOLUME
-    bg_image = pygame.image.load('Resources/tiles/Tiles_from_internet/Настройки звука.png')
-    screen.blit(bg_image, (0, 0))
+    volume_1 = Button('100%', (250, 150), 150, 50, 'gray', 'red', 'yellow', 30)
+    volume_2 = Button('50%', (250, 210), 150, 50, 'black', 'red', 'yellow', 30)
+    volume_3 = Button('25%', (250, 270), 150, 50, 'brown', 'red', 'yellow', 30)
+    volume_4 = Button('ON/OFF', (250, 330), 150, 50, 'pink', 'red', 'yellow', 30)
+    exit_button = Button('НАЗАД', (250, 390), 150, 50, 'green', 'red', 'yellow', 30)
 
-    while True:
+    running = True
+    while running:
+        rendering(screen, r'Resources\Images\dream_TradingCard(2).jpg', (640, 480))
+        render_of_text(screen, 'ЗВУК', (320, 100))
+
+        volume_1.draw(screen)
+        volume_2.draw(screen)
+        volume_3.draw(screen)
+        volume_4.draw(screen)
+        exit_button.draw(screen)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                mouse = pygame.mouse.get_pos()
-                # выход
-                if 240 <= mouse[0] <= 515 and 842 <= mouse[1] <= 933:
-                    break
-                # 100 %
-                elif 261 <= mouse[0] <= 481 and 315 <= mouse[1] <= 406:
-                    SOUND_VOLUME = 0.1
-                    settings_menu(screen)
-                # 50 %
-                elif 278 <= mouse[0] <= 461 and 442 <= mouse[1] <= 522:
-                    SOUND_VOLUME = 0.05
-                    settings_menu(screen)
-                # 25 %
-                elif 286 <= mouse[0] <= 456 and 276 <= mouse[1] <= 660:
-                    SOUND_VOLUME = 0.025
-                    settings_menu(screen)
-                # ON/OFF
-                elif 186 <= mouse[0] <= 586 and 697 <= mouse[1] <= 801:
-                    if SOUND_VOLUME == 0:
+                if exit_button.is_hovered(event.pos):
+                    running = False
+                else:
+                    if volume_1.is_hovered(event.pos):
                         SOUND_VOLUME = 0.1
-                    else:
+                    elif volume_2.is_hovered(event.pos):
+                        SOUND_VOLUME = 0.05
+                    elif volume_3.is_hovered(event.pos):
+                        SOUND_VOLUME = 0.025
+                    elif volume_4.is_hovered(event.pos):
                         SOUND_VOLUME = 0
-                    settings_menu(screen)
-                Music_player.set_volume(SOUND_VOLUME)
+                    Music_player.set_volume(SOUND_VOLUME)
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                settings_menu(screen)
-                break
+                running = False
 
         pygame.display.update()
 
@@ -263,13 +266,14 @@ def choose_level(screen):
         f'Resources/tiles/Tiles_from_internet/25-Choose level/choose level{len(max_ind)}.png')
     screen.blit(bg_image, (0, 0))
 
-    while True:
+    running = True
+    while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                main_menu(show_results=True, replay_music=True)
+                main_menu(screen, show_results=True, replay_music=True)
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse = pygame.mouse.get_pos()
                 # первый уровень, индекс 0
@@ -292,7 +296,7 @@ def choose_level(screen):
                     game_start(5)
                 # кнопка назад
                 elif 1730 <= mouse[0] <= 1891 and 21 <= mouse[1] <= 74:
-                    main_menu(show_results=True, replay_music=True)
+                    main_menu(screen, show_results=True, replay_music=True)
 
         pygame.display.update()
 
@@ -305,13 +309,16 @@ def final_window():
     stopwatch.reset()
     hours, minutes, seconds = transform_time(result_time)
 
-    bg_image = pygame.image.load('Resources/tiles/Tiles_from_internet/Финал.png')
-    screen.blit(bg_image, (0, 0))
+    rendering(screen, r'Resources\Images\dream_TradingCard(2).jpg', (640, 480))
+    render_of_text(screen, 'ИТОГО', (320, 50))
 
-    render_of_text(screen, f'{len(max_ind)}', (590, 504), size=95)
+    render_of_text(screen, f'УРОВНЕЙ ПРОЙДЕНО:', (160, 150), size=35)
+    render_of_text(screen, f'{len(max_ind)}', (30, 200), size=35, color='yellow')
+    render_of_text(screen, f'ВРЕМЕНИ В ИГРЕ ПРОВЕДЕНО:', (215, 250), size=35)
     render_of_text(screen,
                    f'{hours} часов {minutes} минут {seconds} секунд',
-                   (370, 705), size=64)
+                   (175, 300), size=35, color='yellow')
+    render_of_text(screen, f'Кликни, чтобы вернуться в меню', (320, 450), size=25)
 
     while True:
         for event in pygame.event.get():
@@ -319,11 +326,9 @@ def final_window():
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-                main_menu(show_results=False, replay_music=True)
-                break
+                return
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                main_menu(show_results=False, replay_music=True)
-                break
+                return
 
         pygame.display.update()
 
@@ -347,32 +352,7 @@ def start_window(screen):
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                main_menu(show_results=False, replay_music=True)
-
-        pygame.display.update()
-
-
-# вывод обучения
-def learning():
-    screen = pygame.display.set_mode((1200, 900))
-
-    running = True
-    ind = 0
-    while running:
-        screen.fill((6, 5, 13))
-        bg_image = pygame.image.load(f'Resources/tiles/Tiles_from_internet/26-Learning/{int(ind % 8) + 1}.png')
-        screen.blit(bg_image, (0, 0))
-        ind += 0.25
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                running = False
-                main_menu(show_results=False, replay_music=True)
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                main_menu(show_results=False, replay_music=True)
+                main_menu(screen, show_results=False, replay_music=False)
 
         pygame.display.update()
 
