@@ -81,9 +81,12 @@ def game_start(level_ind):
 
             # переход к другому уровню
             if level.should_change:
-                level_ind += 1
-                max_ind.add(level_ind)
-                level = Level(all_levels[level_ind], screen)
+                if level_ind == 5:
+                    final_window()
+                else:
+                    level_ind += 1
+                    max_ind.add(level_ind)
+                    level = Level(all_levels[level_ind], screen)
 
                 level.should_change = False
 
@@ -106,7 +109,7 @@ def main_menu(show_results=False, replay_music=False):
     screen.blit(bg_image, (0, 0))
 
     if show_results:  # при наличии аргумента результаты отобразятся на финальном окне
-        final_window(screen)
+        final_window()
 
     if replay_music:
         # первый санудтрек
@@ -295,7 +298,8 @@ def choose_level(screen):
 
 
 # окно подсчёта результатов
-def final_window(screen):
+def final_window():
+    screen = pygame.display.set_mode((757, 950))
     stopwatch.stop()
     result_time = round(stopwatch.elapsed_time())
     stopwatch.reset()
