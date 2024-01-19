@@ -228,6 +228,7 @@ def audio_settings(screen):
                 mouse = pygame.mouse.get_pos()
                 # выход
                 if 240 <= mouse[0] <= 515 and 842 <= mouse[1] <= 933:
+                    settings_menu(screen)
                     break
                 # 100 %
                 elif 261 <= mouse[0] <= 481 and 315 <= mouse[1] <= 406:
